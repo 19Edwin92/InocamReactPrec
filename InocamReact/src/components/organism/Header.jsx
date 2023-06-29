@@ -1,5 +1,5 @@
 import React from "react";
-import { Outlet } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
 import { StyledHeader } from "../../styled";
 
 function Header() {
@@ -9,6 +9,9 @@ function Header() {
         <div>My Todo List</div>
         <div>React</div>
       </StyledHeader>
+      <li><NavLink to={"/"}>Home</NavLink> </li>
+      <li><NavLink to={"/velopertcounter"}>velopertcolor</NavLink></li>
+      <hr/>
       <Outlet/>
     </>
   );
