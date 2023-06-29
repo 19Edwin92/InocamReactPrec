@@ -1,6 +1,6 @@
 import React from "react";
 import * as Styled from "./styled";
-import Header from "./components/Header";
+import Header from "./components/organism/Header";
 import { Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import Detail from "./pages/Detail";

@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
-import { StyledHeader } from "../styled";
+import { StyledHeader } from "../../styled";
 
 function Header() {
   return (

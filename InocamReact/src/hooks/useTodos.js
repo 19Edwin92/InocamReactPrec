@@ -66,5 +66,5 @@ export const useTodos = () => {
     dispatch(update_todo(id)) // Redux - toolkit
   } 
 
-  return {inputTitle, inputContent, todoListStore, todoSlice,onChangeInput, onSubmitHandler, onDeteleHandler, onDoneHandler}   
+  return {inputTitle, inputContent, todoListStore, todoSlice, onChangeInput, onSubmitHandler, onDeteleHandler, onDoneHandler}   
 }

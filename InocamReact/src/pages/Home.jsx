@@ -1,6 +1,6 @@
 import React from "react";
-import Form from "../components/Form";
-import TodoLists from "../components/TodoLists";
+import Form from "../components/organism/Form";
+import TodoLists from "../components/organism/TodoLists";
 
 function Home() {
 

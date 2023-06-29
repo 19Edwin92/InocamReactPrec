@@ -1,10 +1,10 @@
 import React from "react";
-import * as Styled from "../styled";
+import * as Styled from "../../styled";
 import { NavLink } from "react-router-dom";
-import { useTodos } from '../hooks/useTodos';
+import { useTodos } from '../../hooks/useTodos';
 
 
-function TodoLists({title, type }) {
+function TodoLists({title, type}) {
   const { todoSlice,onDeteleHandler,onDoneHandler} = useTodos();
   return (
     <>
