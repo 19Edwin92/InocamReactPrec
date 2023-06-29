@@ -59,6 +59,8 @@ const todoList = (state=initalState, actions) => {
         }
         return todo;
       });
+
+
     case (DELETE_TODO):
       return state = [...state.filter(list => list.id !== actions.payload)]  
       
@@ -68,6 +70,12 @@ const todoList = (state=initalState, actions) => {
 } 
 
 export default todoList;
+
+// case (UPDATE_TODO):
+  //   const findIndex = state.findIndex(item => item.id === actions.payload)
+  //   const newTodos = [...state]
+  //   newTodos[findIndex].state = !newTodos[findIndex].state
+  //   return state = newTodos
 
 // case (UPDATE_TODO):
   // const findIndex = state.findIndex(item => item.id === actions.payload)

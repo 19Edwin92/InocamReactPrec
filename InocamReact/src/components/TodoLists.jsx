@@ -22,7 +22,7 @@ function TodoLists({title, type, todoList, onDeteleHandler, onDoneHandler }) {
                   삭제하기
                 </Styled.TodoBtn>
                 <Styled.TodoBtn
-                  color="teal"
+                  $color="teal"
                   onClick={() => onDoneHandler(item.id)}>
                   {item.state ? "취소" : "완료"}
                 </Styled.TodoBtn>

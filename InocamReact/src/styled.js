@@ -96,7 +96,7 @@ const Button = styled.div`
 `;
 
 const TodoBtn = styled(Button)`
-  border: 1px solid ${({ color }) => color};
+  border: 1px solid ${({ $color }) => $color};
   border-radius: 10px;
   width: 100px;
   height: 30px;
