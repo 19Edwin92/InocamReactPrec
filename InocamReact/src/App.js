@@ -7,8 +7,6 @@ import Detail from "./pages/Detail";
 import IndexList from "./pages/IndexList";
 
 function App() {
-
-
   return (
     <Styled.Layout>
     <Routes>

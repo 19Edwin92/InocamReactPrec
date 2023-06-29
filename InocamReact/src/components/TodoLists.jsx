@@ -1,13 +1,16 @@
 import React from "react";
 import * as Styled from "../styled";
 import { NavLink } from "react-router-dom";
+import { useTodos } from '../hooks/useTodos';
 
-function TodoLists({title, type, todoList, onDeteleHandler, onDoneHandler }) {
+
+function TodoLists({title, type }) {
+  const { todoSlice,onDeteleHandler,onDoneHandler} = useTodos();
   return (
     <>
       <Styled.TodoState>{title}</Styled.TodoState>
       <Styled.TodoBoxLayout>
-        {todoList
+        {todoSlice
           .filter((item) => item.state === type)
           .map((item) => (
             <Styled.TodoBox key={item.id}>
