@@ -6,16 +6,17 @@ import {connect} from 'react-redux'
 
 // store 안의 state 값을 props 로 연결해줍니다.
 const mapStateToProps = (state) => ({
-  number: state.velopertCounterReducer.counter,
-  color: state.velopertCounterReducer.color
+  counters: state.velopertCounterReducer.counters,
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  onIncrement: () => dispatch(actions.increment()),
+  onCreate:() => dispatch(actions.create(getRandomColor())),
+  onRemove:() => dispatch(actions.remove()),
+  onIncrement: (id) => dispatch(actions.increment(id)),
   onDecrement: () => dispatch(actions.decrement()),
-  onSetColor: () => {
+  onSetColor: (id) => {
     const color= getRandomColor();
-    dispatch(actions.set_color(color))
+    dispatch(actions.set_color({id, color}))
   }
 })
 

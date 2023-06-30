@@ -1,19 +1,39 @@
 import React from 'react'
 import styled from "styled-components";
 
-function VelopertCounter({number, color, onIncrement, onDecrement, onSetColor}) {
+function VelopertCounter({counters, onIncrement, onDecrement, onSetColor, onCreate, onRemove}) {
+  const CounterList =  counters.map((counter, i) => (
+    <Counter
+      key={i}
+      onClick={()=>onIncrement(i)}
+      onDoubleClick={()=>onSetColor(i)}
+      // onContextMenu={(e) => {e.preventDefault(); onDecrement();}} 
+      style={{backgroundColor: counter.color}} >
+        {counter.counter}
+      </Counter>
+  ))
+
+
   return (
     <div>
-      <Counter
-      onClick={onIncrement} 
-      onContextMenu={(e) => {e.preventDefault(); onDecrement();}} 
-      onDoubleClick={onSetColor}
-      style={{backgroundColor: color}}>
-          {number}
-      </Counter>
+      <div>
+        <button onClick={onCreate}>생성</button>
+        <button onClick={onRemove}>제거</button>
+      </div>
+      <div style={{display:"flex", flexWrap:"wrap"}}>
+        {CounterList}
+      </div>
     </div>
   )
 }
+
+      /* <Counter
+        onClick={onIncrement} 
+        onContextMenu={(e) => {e.preventDefault(); onDecrement();}} 
+        onDoubleClick={onSetColor}
+        style={{backgroundColor: color}}>
+          {number}
+      </Counter> */
 
 // VelopertCounter.defaultProps = {
 //   number: 0,
