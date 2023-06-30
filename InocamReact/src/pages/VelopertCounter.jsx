@@ -1,35 +1,49 @@
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { changeColor, selectColor } from '../redux/modules/velopertCounter'
+import styled from "styled-components";
 
-const PaletteItem = ({ color }) => {
-  const dispatch = useDispatch()
-  return (
-    <div
-      style={{ width:"100px",height:"100px",backgroundColor: color}}
-      onClick={()=>dispatch(changeColor(color))}
-      // children={color}
-    />
-  );
-  }
-
-function VelopertCounter() {
-  const color = useSelector(selectColor)
-  const colors = ['red', 'orange', 'yellow', 'green', 'blue', 'indigo', 'violet'];
-
-  
-
+function VelopertCounter({number, color, onIncrement, onDecrement, onSetColor}) {
+  console.log({number, color, onIncrement, onDecrement, onSetColor})
   return (
     <div>
-      <h1>VelopertColor</h1>
-      <p style={{color:`${color}`, fontWeight:"800", fontSize:"2rem"}}>{color}</p>
-      <div className="colors" style={{display:"flex"}}>
-        {colors.map(color => (
-          <PaletteItem color={color} key={color}/>
-        ))}
-      </div>
+      <Counter
+      onClick={onIncrement} 
+      onContextMenu={(e) => {e.preventDefault(); onDecrement();}} 
+      onDoubleClick={onSetColor}
+      style={{backgroundColor: color}}>
+          {number}
+      </Counter>
     </div>
   )
 }
 
+// VelopertCounter.defaultProps = {
+//   number: 0,
+//   color: 'black',
+//   onIncrement: () => console.warn('onIncrement not defined'),
+//   onDecrement: () => console.warn('onDecrement not defined'),
+//   onSetColor: () => console.warn('onSetColor not defined')
+// };
+
 export default VelopertCounter
+
+const Counter = styled.div`
+    width: 10rem;
+    height: 10rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 1rem;
+    background-color: black;
+
+     /* 색상 */
+    color: white;
+
+    /* 폰트 */
+    font-size: 3rem;
+
+    /* 기타 */
+    border-radius: 100%;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.75s;
+`

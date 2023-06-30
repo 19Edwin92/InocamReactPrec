@@ -50,7 +50,7 @@ const initalState = [
 // 04 Reducers
 const todoList = (state=initalState, actions) => {
   switch (actions.type) {
-    case (ADD_TODO):
+    case ADD_TODO:
       return state = [...state, actions.payload]
     case (UPDATE_TODO):
       return state.map(todo => {

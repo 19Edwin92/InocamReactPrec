@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 // import { add_todoReducer, detele_todoReducer, update_todoReducer } from "../redux/modules/todoReducer"
-import { add_todo, delete_todo, selectTodo, update_todo } from "../redux/modules/todoSlice"
+import { add_todo, delete_todo, selectTodo, update_todo } from "../redux/modules/sliceTodo"
 
 export const useTodos = () => {
   const [inputTitle, setInputTitle] = useState("")

@@ -9,8 +9,11 @@ function Header() {
         <div>My Todo List</div>
         <div>React</div>
       </StyledHeader>
-      <li><NavLink to={"/"}>Home</NavLink> </li>
-      <li><NavLink to={"/velopertcounter"}>velopertcolor</NavLink></li>
+      <ul style={{display:"flex", gap:"1rem", padding:"0"}}>
+        <li style={{listStyleType:"none"}}><NavLink to={"/"}>Home</NavLink> </li>
+        <li style={{listStyleType:"none"}} ><NavLink to={"/velopertcolor"}>velopertcolor2</NavLink></li>
+        <li style={{listStyleType:"none"}} ><NavLink to={"/velopertcounter"}>velopertcounter</NavLink></li>
+      </ul>
       <hr/>
       <Outlet/>
     </>
