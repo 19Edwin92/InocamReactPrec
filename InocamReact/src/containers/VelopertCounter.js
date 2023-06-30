@@ -1,6 +1,8 @@
 import VelopertCounter from '../pages/VelopertCounter'
 import * as actions from '../redux/modules/reducervelopertCounter'
 import {connect} from 'react-redux'
+// "useDispatch"와 "useSelector" 가 적용되지 이전의 구버전에서의 활용법 
+
 
 // store 안의 state 값을 props 로 연결해줍니다.
 const mapStateToProps = (state) => ({
