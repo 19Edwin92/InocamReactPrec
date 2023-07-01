@@ -68,6 +68,7 @@ const todoList = (state=initalState, actions) => {
 } 
 
 export default todoList;
+export const selectTodo = (state) => state.todoList // (2)
 
 // case (UPDATE_TODO):
   // const findIndex = state.findIndex(item => item.id === actions.payload)

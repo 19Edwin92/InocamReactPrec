@@ -7,6 +7,7 @@ import Detail from "./pages/Detail";
 import IndexList from "./pages/IndexList";
 import VelopertColor from './pages/VelopertColor'
 import VelopertCounterContatiner from "./containers/VelopertCounter";
+import DragandDrop from "./pages/DragandDrop";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route index element={<Home/>}/>
         <Route path="velopertcolor" element={<VelopertColor />}/>
         <Route path="velopertcounter" element={<VelopertCounterContatiner/>}/>
+        <Route path="draganddrop" element={<DragandDrop/>}/>
         <Route path=":id" element={<Detail/>}>
           <Route index element={<IndexList/>}/>
         </Route>

@@ -17,6 +17,7 @@ function VelopertCounter({counters, onIncrement, onDecrement, onSetColor, onCrea
   return (
     <div>
       <div>
+        <p>- https://velopert.com/3352</p>
         <button onClick={onCreate}>생성</button>
         <button onClick={onRemove}>제거</button>
       </div>
