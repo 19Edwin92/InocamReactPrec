@@ -15,21 +15,22 @@ const DraggableContainer = () => {
     { id: "item-10", content: "아이템 10" },
   ]);
 
-  const [moveItem, setMoveIten] = useState(null)
+  // const [moveItem, setMoveIten] = useState(null)
   const handleDragStart = (e, id) => {
+    e.dataTransfer.effectAllowed = 'move'; // 드래그시 발생되었던 + 버튼이 사라진다. 
     e.dataTransfer.setData("text/plain", id);
-    setMoveIten(id)
+    // setMoveIten(id)
   };
 
   const handleDragOver = (e, index) => {
     e.preventDefault();
-    const draggedItemIndex = items.findIndex((item) => item.id === moveItem);
-    if (draggedItemIndex > -1 && draggedItemIndex !== index) {
-      const draggedItem = items[draggedItemIndex];
-      const newItems = items.filter((item) => item.id !== moveItem);
-      newItems.splice(index, 0, draggedItem);
-      setItems(newItems);
-    }
+    // const draggedItemIndex = items.findIndex((item) => item.id === moveItem);
+    // if (draggedItemIndex > -1 && draggedItemIndex !== index) {
+    //   const draggedItem = items[draggedItemIndex];
+    //   const newItems = items.filter((item) => item.id !== moveItem);
+    //   newItems.splice(index, 0, draggedItem);
+    //   setItems(newItems);
+    // }
   };
 
   const handleDrop = (e, index) => {
@@ -41,9 +42,16 @@ const DraggableContainer = () => {
       const [draggedItem] = newItems.splice(itemIndex, 1);
       newItems.splice(index, 0, draggedItem);
       setItems(newItems);
-      setMoveIten(null)
+      // setMoveIten(null)
     }
   };
+
+  //  Drag and Drop 
+  const [draggableItems, setDraggableItems] = useState([
+    { id: 'draggable-1', text: 'Draggable 1' },
+    { id: 'draggable-2', text: 'Draggable 2' }
+  ]);
+  const [droppedItems, setDroppedItems] = useState([]);
 
   return (
     <>
@@ -78,7 +86,8 @@ const DraggableContainer = () => {
       </p>
 
       
-      <Container
+     <div style={{display:"flex", gap:"10px"}}>
+     <Container
         style={{ display: "flex", flexDirection: "column", gap: "5px" }}
       >
         {items.map((item, index) => (<Item
@@ -92,6 +101,55 @@ const DraggableContainer = () => {
         </Item>)
         )}
       </Container>
+      <Container2>
+        <DragOrigin
+          onDragOver={(e)=>e.preventDefault()}
+          // onDrop={(e)=> {
+          //   const id = e.dataTransfer.getData('text/plain')
+          //   const draggableElement = document.getElementById(id);
+          //   const dropzone = e.target;
+          //   dropzone.appendChild(draggableElement);
+          // }}
+          onDrop={(e)=> {
+            const id = e.dataTransfer.getData('text/plain')
+            // const draggableElement = document.getElementById(id);
+            // const dropzone = e.target;
+            // dropzone.appendChild(draggableElement);
+            const droppdItem = droppedItems.find(item => item.id === id)
+            if (droppdItem) {
+              setDroppedItems((prevItems) => prevItems.filter(item => item.id !== id));
+              setDraggableItems((prevItems) => [...prevItems, droppdItem]);
+            }
+          }}
+        >
+           {/* {draggableItems.map(item => (
+          <MoveItem draggable key={item.id}>{item.text}</MoveItem>
+        ))} */}
+           <MoveItem id="draggable-1" draggable onDragStart={(e) => {
+            e.dataTransfer.effectAllowed = 'move'; 
+            e.dataTransfer.setData('text/plain', e.target.id)
+          }}>Draggable</MoveItem>
+        </DragOrigin>
+        <DropZone
+          onDragOver={(e)=>e.preventDefault()}
+          onDrop={(e)=> {
+            const id = e.dataTransfer.getData('text/plain')
+            // const draggableElement = document.getElementById(id);
+            // const dropzone = e.target;
+            // dropzone.appendChild(draggableElement);
+            const droppdItem = draggableItems.find(item => item.id === id)
+            if (droppdItem) {
+              setDraggableItems((prevItems) => prevItems.filter(item => item.id !== id));
+              setDroppedItems((prevItems) => [...prevItems, droppdItem]);
+            }
+          }}
+        >dropzone
+        {droppedItems.map(item => (
+          <MoveItem draggable key={item.id}>{item.text}</MoveItem>
+        ))}
+        </DropZone>
+      </Container2>
+     </div>
     </>
   );
 };
@@ -108,15 +166,50 @@ const Container = styled.div`
   margin-left:20px;
 `;
 
+
 const Item = styled.div`
   width: 100px;
   height: 50px;
   background-color: lightgray;
   margin-right: 10px;
-  cursor: move;
+  cursor: grab;
   z-index: ${(props) => (props.isDragging ? 1 : "auto")};
 `;
 
+
+const Container2 = styled(Container)`
+  border: 2px solid #DFA612;
+  color: black;
+  display: flex;
+  font-family: sans-serif;
+  font-weight: bold;
+
+`
+
+const DragOrigin = styled.div`
+  flex-basis: 100%;
+  flex-grow: 1;
+  padding: 10px;
+  
+`
+
+const MoveItem = styled.div`
+  background-color: #4AAE9B;
+  font-weight: normal;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  padding: 10px;
+  &:active {
+    background-color:yellow;
+  }
+`
+
+const DropZone = styled.div`
+  background-color: #6DB65B;
+  flex-basis: 100%;
+  flex-grow: 1;
+  padding: 10px;
+`
 
   // const draggedItem = useRef(null);
   // const handleDragStart = (e, id) => {
