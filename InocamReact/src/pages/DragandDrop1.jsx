@@ -24,7 +24,13 @@ const DraggableContainer = () => {
 
   const handleDragOver = (e, index) => {
     e.preventDefault();
+    // handleDragOver 때에도 변하도록 
+    const itemId = e.dataTransfer.getData("text/plain");
+    console.log(itemId)
+
     // const draggedItemIndex = items.findIndex((item) => item.id === moveItem);
+    // const margin = document.getElementById(items[draggedItemIndex+1].id)
+    // margin.style.marginTop = "100px"
     // if (draggedItemIndex > -1 && draggedItemIndex !== index) {
     //   const draggedItem = items[draggedItemIndex];
     //   const newItems = items.filter((item) => item.id !== moveItem);
@@ -35,7 +41,11 @@ const DraggableContainer = () => {
 
   const handleDrop = (e, index) => {
     const itemId = e.dataTransfer.getData("text/plain");
+    console.log(itemId)
     const itemIndex = items.findIndex((item) => item.id === itemId);
+    // const draggedItemIndex = items.findIndex((item) => item.id === moveItem);
+    // const margin = document.getElementById(items[draggedItemIndex+1].id)
+    // margin.style.marginTop = null
 
     if (itemIndex > -1) {
       const newItems = [...items];
@@ -86,12 +96,14 @@ const DraggableContainer = () => {
       </p>
 
       
-     <div style={{display:"flex", gap:"10px"}}>
-     <Container
+    <div style={{display:"flex", gap:"10px"}}>
+    <Container
         style={{ display: "flex", flexDirection: "column", gap: "5px" }}
       >
         {items.map((item, index) => (<Item
+          $marginB={item.marginB}
           key={item.id}
+          id={item.id}
           draggable
           onDragStart={(e) => handleDragStart(e, item.id)}
           onDragOver={(e)=> handleDragOver(e, index)}
@@ -104,17 +116,8 @@ const DraggableContainer = () => {
       <Container2>
         <DragOrigin
           onDragOver={(e)=>e.preventDefault()}
-          // onDrop={(e)=> {
-          //   const id = e.dataTransfer.getData('text/plain')
-          //   const draggableElement = document.getElementById(id);
-          //   const dropzone = e.target;
-          //   dropzone.appendChild(draggableElement);
-          // }}
           onDrop={(e)=> {
             const id = e.dataTransfer.getData('text/plain')
-            // const draggableElement = document.getElementById(id);
-            // const dropzone = e.target;
-            // dropzone.appendChild(draggableElement);
             const droppdItem = droppedItems.find(item => item.id === id)
             if (droppdItem) {
               setDroppedItems((prevItems) => prevItems.filter(item => item.id !== id));
@@ -122,21 +125,21 @@ const DraggableContainer = () => {
             }
           }}
         >
-           {/* {draggableItems.map(item => (
-          <MoveItem draggable key={item.id}>{item.text}</MoveItem>
-        ))} */}
-           <MoveItem id="draggable-1" draggable onDragStart={(e) => {
-            e.dataTransfer.effectAllowed = 'move'; 
-            e.dataTransfer.setData('text/plain', e.target.id)
-          }}>Draggable</MoveItem>
+          {draggableItems.map(item => (
+          <DragItem 
+            draggable 
+            key={item.id}
+            onDragStart={(e) => {
+              e.dataTransfer.effectAllowed = 'move'; 
+              e.dataTransfer.setData('text/plain', item.id)
+            }}
+            >{item.text}</DragItem>
+        ))}
         </DragOrigin>
         <DropZone
           onDragOver={(e)=>e.preventDefault()}
           onDrop={(e)=> {
             const id = e.dataTransfer.getData('text/plain')
-            // const draggableElement = document.getElementById(id);
-            // const dropzone = e.target;
-            // dropzone.appendChild(draggableElement);
             const droppdItem = draggableItems.find(item => item.id === id)
             if (droppdItem) {
               setDraggableItems((prevItems) => prevItems.filter(item => item.id !== id));
@@ -145,11 +148,18 @@ const DraggableContainer = () => {
           }}
         >dropzone
         {droppedItems.map(item => (
-          <MoveItem draggable key={item.id}>{item.text}</MoveItem>
+          <DrogItem 
+            draggable
+            key={item.id}
+            onDragStart={(e) => {
+              e.dataTransfer.effectAllowed = 'move'; 
+              e.dataTransfer.setData('text/plain', item.id)
+            }}
+            >{item.text}</DrogItem>
         ))}
         </DropZone>
       </Container2>
-     </div>
+    </div>
     </>
   );
 };
@@ -172,8 +182,13 @@ const Item = styled.div`
   height: 50px;
   background-color: lightgray;
   margin-right: 10px;
+  margin-bottom: ${({$marginB}) => $marginB};
   cursor: grab;
   z-index: ${(props) => (props.isDragging ? 1 : "auto")};
+  transition: all 0.5ms;
+  &:active {
+    background-color:yellow;
+  }
 `;
 
 
@@ -193,7 +208,7 @@ const DragOrigin = styled.div`
   
 `
 
-const MoveItem = styled.div`
+const DragItem = styled.div`
   background-color: #4AAE9B;
   font-weight: normal;
   margin-bottom: 10px;
@@ -202,6 +217,10 @@ const MoveItem = styled.div`
   &:active {
     background-color:yellow;
   }
+`
+
+const DrogItem = styled(DragItem)`
+  background-color: #DFA612;
 `
 
 const DropZone = styled.div`

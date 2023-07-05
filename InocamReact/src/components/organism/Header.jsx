@@ -6,11 +6,12 @@ import { useSelector } from "react-redux";
 import { selectColor } from "../../redux/modules/velopertColor";
 
 function Header() {
-  console.log("Header가 리렌더링 됩니다. ")
   const color = useSelector(selectColor)
+  console.log("Header 리렌더링 됩니다.")
   return (
     <>
       {/* <Butterfly /> */}
+
       <StyledHeader>
         <div style={{color:`${color}` || "black"}}>My Todo List</div>
         <div>React</div>
@@ -20,6 +21,9 @@ function Header() {
         <li style={{listStyleType:"none"}} ><NavLink to={"/velopertcolor"}>velopertcolor</NavLink></li>
         <li style={{listStyleType:"none"}} ><NavLink to={"/velopertcounter"}>velopertcounter</NavLink></li>
         <li style={{listStyleType:"none"}} ><NavLink to={"/draganddrop"}>draganddrop</NavLink></li>
+        <li style={{listStyleType:"none"}} ><NavLink to={"/kakao"}>kakao</NavLink></li>
+        <li style={{listStyleType:"none"}} ><NavLink to={"/styledcomponents"}>styledcomponents</NavLink></li>
+
       </ul>
       <hr/>
       <Outlet/>

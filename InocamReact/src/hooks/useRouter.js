@@ -17,13 +17,13 @@ export const useRouter = () => {
   const beforePage = () => {
     id === todoLists[0].id 
       ? alert("첫번째페이지") 
-      : navigate(`/${todoLists[findIndex-1].id}`)
+      : navigate(`/detail/${todoLists[findIndex-1].id}`)
   }
 
   const nextPage = () => {
     id === todoLists[todoLists.length-1].id 
       ? alert("마지막페이지") 
-      : navigate(`/${todoLists[findIndex+1].id}`)
+      : navigate(`/detail/${todoLists[findIndex+1].id}`)
   }
 
   const ButtonList = [

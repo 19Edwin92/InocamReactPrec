@@ -1,4 +1,10 @@
-import styled, { css } from "styled-components";
+import styled, { createGlobalStyle, css } from "styled-components";
+
+export const GlobalStyle = createGlobalStyle`
+  div {
+    box-sizing: border-box;
+  }
+`
 
 const StyledHeader = styled.div`
   height: 80px;
@@ -121,6 +127,7 @@ const IndexLayout = styled.div`
   box-sizing: border-box;
   padding: 4px;
 `;
+
 
 export {
   StyledHeader,

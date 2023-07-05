@@ -15,7 +15,7 @@ export const useTodos = () => {
   const todoSlice = useSelector(selectTodo)
 
   // CREATE - INPUT
-  const onChangeInput = (e, type) => {
+  const onChangeInput = (type) => (e) => {
     switch (type) {
       case "title":
         setInputTitle(e.target.value);
@@ -55,13 +55,13 @@ export const useTodos = () => {
   }
 
   // DETELT
-  const onDeteleHandler =  (id) => {
+  const onDeteleHandler =  (id) => () => {
     // dispatch(detele_todoReducer(id)) // 기존 Redux
     dispatch(delete_todo(id)) // Redux - toolkit
   }
 
   // UPDATE
-  const onDoneHandler = (id) => {
+  const onDoneHandler = (id) => () => {
     // dispatch(update_todoReducer(id)) //기존 Redux
     dispatch(update_todo(id)) // Redux - toolkit
   } 

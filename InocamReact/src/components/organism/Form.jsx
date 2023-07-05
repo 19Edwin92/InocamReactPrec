@@ -12,12 +12,12 @@ function Form() {
       <CustomInput
         legend="Todo-Title"
         value={inputTitle}
-        onChange={(e) => onChangeInput(e, "title")}
+        onChange={onChangeInput("title")}
       />
       <CustomInput
         legend="Todo-Content"
         value={inputContent}
-        onChange={(e) => onChangeInput(e, "content")}
+        onChange={onChangeInput("content")}
       />
       <input type="submit" value="추가하기" />
     </Styled.Form>
