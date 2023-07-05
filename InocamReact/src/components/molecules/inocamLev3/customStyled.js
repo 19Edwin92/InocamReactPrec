@@ -143,6 +143,10 @@ const BellIncon = styled.div`
   display:inline-block; 
 `
 
+const SelectOutLine = styled.div`
+  position: relative;
+`
+
 const SelectLayout = styled.div`
   border: 3px solid rgb(221, 221, 221);
   height: 200px;
@@ -166,8 +170,8 @@ const SelectBtn = styled.div`
 `;
 
 const SelectModal = styled.div`
-  position: ${({position}) => position ? position : "relative"};
-  top: ${({position}) => position ? "767px" : "10px"};
+  position: ${({$position}) => $position ? $position : "relative"};
+  top: ${({$position}) => $position ? "120px" : "10px"};
   border: 1px solid rgb(238, 238, 238);
   border-radius: 12px;
   width: 300px;
@@ -187,4 +191,4 @@ const SelectModalBtn = styled.div`
   }
 `;
 
-export {Layout, StBtn, ModalOut, ModalLine, ModalBtnLayout, ModalCloseBtn, Dot, BellIncon, Select, SelectLayout, SelectBtn, SelectModal,SelectModalBtn}
+export {Layout, StBtn, ModalOut, ModalLine, ModalBtnLayout, ModalCloseBtn, Dot, BellIncon, SelectOutLine, Select, SelectLayout, SelectBtn, SelectModal,SelectModalBtn}

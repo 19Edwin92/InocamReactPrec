@@ -7,7 +7,6 @@ import { selectColor } from "../../redux/modules/velopertColor";
 
 function Header() {
   const color = useSelector(selectColor)
-  console.log("Header 리렌더링 됩니다.")
   return (
     <>
       {/* <Butterfly /> */}
