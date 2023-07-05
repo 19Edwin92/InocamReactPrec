@@ -1,18 +1,30 @@
 // import { legacy_createStore as createStore } from "redux";
 // import { combineReducers } from "redux";
-import todoList from '../modules/todoReducer'
-import { configureStore } from "@reduxjs/toolkit";
+// import todoSlice from '../modules/sliceTodo'
+// import todoList from '../modules/reducerTodo'
+// import velopertColor from '../modules/velopertColor'
+// import velopertCounterReducer from '../modules/reducervelopertCounter'
 
-const store = configureStore({
-  reducer:{todoList}
-})
-
-// rootReducers 모듈(거대한 클래스 - 속성(state)+메서드(action.type))
 // const rootReducers = combineReducers({
-//   todoList,
+//   todoList,todoSlice, velopertColor, velopertCounterReducer
 // })
 
-// const store = createStore(rootReducers)
+// const store = createStore(rootReducers, composeWithDevTools())
+
+// export default store
+
+import { configureStore } from "@reduxjs/toolkit";
+import todoList from '../modules/reducerTodo'
+import todoSlice from '../modules/sliceTodo'
+import velopertColor from '../modules/velopertColor'
+import velopertCounterReducer from '../modules/reducervelopertCounter'
+
+
+const store = configureStore({
+  reducer:{todoList, todoSlice, velopertColor, velopertCounterReducer},
+  devTools: process.env.NODE_ENV === "development" && true
+  // devTools:true
+})
 
 export default store
 

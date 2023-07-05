@@ -1,42 +1,14 @@
 import React from "react";
-import Form from "../components/Form";
-import TodoLists from "../components/TodoLists";
-import { useTodos } from "../hooks/useTodos";
-
+import Form from "../components/organism/Form";
+import TodoLists from "../components/organism/TodoLists";
 
 function Home() {
-  const {
-    inputTitle,
-    inputContent,
-    todoListStore,
-    onChangeInput,
-    onSubmitHandler,
-    onDeteleHandler,
-    onDoneHandler,
-  } = useTodos();
 
   return (
     <div>
-      <Form
-        titlevalue={inputTitle}
-        contentvalue={inputContent}
-        onSubmit={onSubmitHandler}
-        onChangeInput={onChangeInput}
-      />
-      <TodoLists
-        title="Working..🍟"
-        type={false}
-        todoList={todoListStore}
-        onDeteleHandler={onDeteleHandler}
-        onDoneHandler={onDoneHandler}
-      />
-      <TodoLists
-        title="Done..🥑"
-        type={true}
-        todoList={todoListStore}
-        onDeteleHandler={onDeteleHandler}
-        onDoneHandler={onDoneHandler}
-      />
+      <Form />
+      <TodoLists title="Working..🍟" type={false} />
+      <TodoLists title="Done..🥑" type={true} />
     </div>
   );
 }

@@ -50,7 +50,7 @@ const initalState = [
 // 04 Reducers
 const todoList = (state=initalState, actions) => {
   switch (actions.type) {
-    case (ADD_TODO):
+    case ADD_TODO:
       return state = [...state, actions.payload]
     case (UPDATE_TODO):
       return state.map(todo => {
@@ -68,6 +68,7 @@ const todoList = (state=initalState, actions) => {
 } 
 
 export default todoList;
+export const selectTodo = (state) => state.todoList // (2)
 
 // case (UPDATE_TODO):
   // const findIndex = state.findIndex(item => item.id === actions.payload)
