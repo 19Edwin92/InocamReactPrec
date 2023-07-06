@@ -91,4 +91,4 @@ const todos = (state = initialState, action) => {
 };
 
 export default todos;
-export const getTodo = (state) => state.todos.todos
+export const getTodo = (state) => state.todos

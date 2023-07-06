@@ -5,9 +5,9 @@ import { useNavigate, useParams } from "react-router-dom";
 import { getTodo } from "../redux/modules/todos.js";
 
 const Detail = () => {
-  const todo = useSelector(getTodo);
+  const { todos } = useSelector(getTodo);
   const { id } = useParams();
-  const findTodo = todo.find(item => item.id === id)
+  const findTodo = todos.find(item => item.id === id)
 
   const navigate = useNavigate();
 
