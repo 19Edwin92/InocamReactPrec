@@ -10,6 +10,12 @@ import { GlobalStyle } from "./styled";
 import { ThemeProvider } from "styled-components";
 import { theme } from "./theme";
 
+// Start the mocking conditionally.
+if (process.env.NODE_ENV === 'development') {
+    const { worker } = require('./mock/browser')
+    worker.start()
+}
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
     <BrowserRouter>

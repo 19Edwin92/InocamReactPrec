@@ -46,6 +46,8 @@ const todoSlice = createSlice({
 
 export default todoSlice.reducer; // (1)
 export const selectTodo = (state) => state.todoSlice // (2)
+export const selectfindIdx = (state, id) => state.todoSlice.findIndex(todo => todo.id === id) 
+export const selectfindTodo = (state, id) => state.todoSlice.find(todo => todo.id === id) // (2)
 export const {add_todo, update_todo, delete_todo} = todoSlice.actions; // (3)
 
 

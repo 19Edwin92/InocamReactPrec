@@ -10,6 +10,7 @@ import VelopertCounterContatiner from "./containers/VelopertCounter";
 import DragandDrop1 from "./pages/DragandDrop1";
 import Kakao from "./pages/Kakao";
 import StyledComponents from "./pages/StyledComponents";
+import NotFound from "./pages/NotFound";
 
 function App() {
   return (
@@ -25,13 +26,9 @@ function App() {
         <Route path="kakao" element={<Kakao/>}/>
         <Route path="styledcomponents" element={<StyledComponents/>}/>
         <Route path="detail" element={<IndexList/>}>
-
           <Route path=":id" element={<Detail/>}/>
-
-
         </Route>
-
-
+        <Route path="*" element={<NotFound/>}/>
       </Route>
     </Routes>
     </Styled.Layout>

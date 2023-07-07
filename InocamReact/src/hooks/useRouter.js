@@ -1,15 +1,14 @@
 import { useSelector } from "react-redux"
 import { useNavigate, useParams } from "react-router-dom"
-import { selectTodo } from "../redux/modules/sliceTodo"
+import { selectTodo, selectfindIdx, selectfindTodo } from "../redux/modules/sliceTodo"
 
 export const useRouter = () => {
   const id = +(useParams().id)
   const navigate = useNavigate()
 
-  // const todoLists = useSelector(state => state.todoList)
   const todoLists = useSelector(selectTodo)
-  const findIndex = todoLists.findIndex(item => item.id === id)
-  const findTodo = todoLists.find(item => item.id === id)
+  const findIndex = useSelector(state => selectfindIdx(state, id))
+  const findTodo = useSelector(state => selectfindTodo(state, id))
 
   const goHome = () => {
     navigate('/')

@@ -16,12 +16,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import todoList from '../modules/reducerTodo'
 import todoSlice from '../modules/sliceTodo'
+import todoThunk from '../modules/thunkTodo'
 import velopertColor from '../modules/velopertColor'
 import velopertCounterReducer from '../modules/reducervelopertCounter'
 
 
 const store = configureStore({
-  reducer:{todoList, todoSlice, velopertColor, velopertCounterReducer},
+  reducer:{todoList, todoSlice, velopertColor, velopertCounterReducer, todoThunk},
   devTools: process.env.NODE_ENV === "development" && true
   // devTools:true
 })
