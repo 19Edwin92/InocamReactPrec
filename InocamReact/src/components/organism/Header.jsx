@@ -7,6 +7,7 @@ import { selectColor } from "../../redux/modules/velopertColor";
 
 function Header() {
   const color = useSelector(selectColor)
+  const link = ["velopertcolor", "velopertcounter", "draganddrop", "kakao", "animaition", "styledcomponents"]
   return (
     <>
       {/* <Butterfly /> */}
@@ -17,12 +18,7 @@ function Header() {
       </StyledHeader>
       <ul style={{display:"flex", gap:"1rem", padding:"0"}}>
         <li style={{listStyleType:"none"}}><NavLink to={"/"}>Home</NavLink> </li>
-        <li style={{listStyleType:"none"}} ><NavLink to={"/velopertcolor"}>velopertcolor</NavLink></li>
-        <li style={{listStyleType:"none"}} ><NavLink to={"/velopertcounter"}>velopertcounter</NavLink></li>
-        <li style={{listStyleType:"none"}} ><NavLink to={"/draganddrop"}>draganddrop</NavLink></li>
-        <li style={{listStyleType:"none"}} ><NavLink to={"/kakao"}>kakao</NavLink></li>
-        <li style={{listStyleType:"none"}} ><NavLink to={"/styledcomponents"}>styledcomponents</NavLink></li>
-
+        {link.map(links => <li style={{listStyleType:"none"}} key={links}><NavLink to={`/${links}`}>{links}</NavLink> </li>)}
       </ul>
       <hr/>
       <Outlet/>

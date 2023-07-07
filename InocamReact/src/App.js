@@ -10,6 +10,7 @@ import VelopertCounterContatiner from "./containers/VelopertCounter";
 import DragandDrop1 from "./pages/DragandDrop1";
 import Kakao from "./pages/Kakao";
 import StyledComponents from "./pages/StyledComponents";
+import Animaition from "./pages/Animaition";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path="draganddrop" element={<DragandDrop1/>}/>
         <Route path="kakao" element={<Kakao/>}/>
         <Route path="styledcomponents" element={<StyledComponents/>}/>
+        <Route path="animaition" element={<Animaition/>}/>
         <Route path="detail" element={<IndexList/>}>
 
           <Route path=":id" element={<Detail/>}/>
