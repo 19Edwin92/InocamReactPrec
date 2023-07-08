@@ -1,7 +1,8 @@
 import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 // import { add_todoReducer, detele_todoReducer, update_todoReducer } from "../redux/modules/todoReducer"
-import { add_todo, delete_todo, selectTodo, update_todo } from "../redux/modules/sliceTodo"
+// import { add_todo, delete_todo, selectTodo, update_todo } from "../redux/modules/sliceTodo"
+import { __deleteTodosThunk, __postTodosThunk, __updateTodosThunk } from "../redux/modules/thunkTodo"
 
 export const useTodos = () => {
   const [inputTitle, setInputTitle] = useState("")
@@ -12,7 +13,7 @@ export const useTodos = () => {
   const dispatch = useDispatch()
 
   // Redux toolkit Slicex
-  const todoSlice = useSelector(selectTodo)
+  // const todoSlice = useSelector(selectTodo)
 
   // CREATE - INPUT
   const onChangeInput = (type) => (e) => {
@@ -49,7 +50,8 @@ export const useTodos = () => {
 
     inputTitle && inputContent && 
     // dispatch(add_todoReducer(createTodo)) // 기존 Redux
-    dispatch(add_todo(createTodo)) // Redux - toolkit
+    // dispatch(add_todo(createTodo)) // Redux - toolkit
+    dispatch(__postTodosThunk(createTodo))
     setInputTitle("")
     setInputContent("")
   }
@@ -57,14 +59,19 @@ export const useTodos = () => {
   // DETELT
   const onDeteleHandler =  (id) => () => {
     // dispatch(detele_todoReducer(id)) // 기존 Redux
-    dispatch(delete_todo(id)) // Redux - toolkit
+    // dispatch(delete_todo(id)) // Redux - toolkit
+    dispatch(__deleteTodosThunk(id))
+    
   }
 
   // UPDATE
   const onDoneHandler = (id) => () => {
     // dispatch(update_todoReducer(id)) //기존 Redux
-    dispatch(update_todo(id)) // Redux - toolkit
+    // dispatch(update_todo(id)) // Redux - toolkit
+    dispatch(__updateTodosThunk(id))
   } 
 
-  return {inputTitle, inputContent, todoListStore, todoSlice, onChangeInput, onSubmitHandler, onDeteleHandler, onDoneHandler}   
+  
+  // return {inputTitle, inputContent, todoListStore, todoSlice, onChangeInput, onSubmitHandler, onDeteleHandler, onDoneHandler}   
+  return {inputTitle, inputContent, todoListStore, onChangeInput, onSubmitHandler, onDeteleHandler, onDoneHandler}   
 }

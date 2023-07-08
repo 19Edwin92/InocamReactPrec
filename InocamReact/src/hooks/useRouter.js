@@ -1,14 +1,18 @@
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { useNavigate, useParams } from "react-router-dom"
-import { selectTodo, selectfindIdx, selectfindTodo } from "../redux/modules/sliceTodo"
+// import { selectTodo, selectfindIdx, selectfindTodo } from "../redux/modules/sliceTodo"
+import { __getTodosThunk, selectTodo, selectfindIdx, selectfindTodo } from "../redux/modules/thunkTodo"
+import { useLayoutEffect } from "react"
 
 export const useRouter = () => {
   const id = +(useParams().id)
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
-  const todoLists = useSelector(selectTodo)
-  const findIndex = useSelector(state => selectfindIdx(state, id))
-  const findTodo = useSelector(state => selectfindTodo(state, id))
+  useLayoutEffect(() => {dispatch(__getTodosThunk())}, [dispatch]) 
+  const {todos:todoLists} = useSelector(selectTodo)
+  const findIndex = useSelector(selectfindIdx(id))
+  const findTodo = useSelector(selectfindTodo(id))
 
   const goHome = () => {
     navigate('/')
@@ -42,4 +46,5 @@ export const useRouter = () => {
 ]
   
   return {todoLists, findTodo, navigate, ButtonList}
+
 }

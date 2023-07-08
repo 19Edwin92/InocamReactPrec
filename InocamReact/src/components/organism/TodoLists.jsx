@@ -2,16 +2,22 @@ import React from "react";
 import * as Styled from "../../styled";
 import { NavLink } from "react-router-dom";
 import { useTodos } from '../../hooks/useTodos';
+import { useSelector } from "react-redux";
+import { selectTodo } from "../../redux/modules/thunkTodo";
 
 
 function TodoLists({title, type}) {
-  const { todoSlice,onDeteleHandler,onDoneHandler} = useTodos();
+  // const { todoSlice,onDeteleHandler,onDoneHandler} = useTodos();
+  const {onDeteleHandler,onDoneHandler} = useTodos();
+  const {isLoading, error, todos} = useSelector(selectTodo)
 
+  if (isLoading || error) return <div>로딩중...</div>
   return (
     <>
       <Styled.TodoState>{title}</Styled.TodoState>
       <Styled.TodoBoxLayout>
-        {todoSlice
+        {/* {todoSlice */}
+        {todos
           .filter((item) => item.state === type)
           .map((item) => (
             <Styled.TodoBox key={item.id}>

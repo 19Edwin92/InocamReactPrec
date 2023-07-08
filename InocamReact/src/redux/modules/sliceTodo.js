@@ -49,17 +49,3 @@ export const selectTodo = (state) => state.todoSlice // (2)
 export const selectfindIdx = (state, id) => state.todoSlice.findIndex(todo => todo.id === id) 
 export const selectfindTodo = (state, id) => state.todoSlice.find(todo => todo.id === id) // (2)
 export const {add_todo, update_todo, delete_todo} = todoSlice.actions; // (3)
-
-
-/*
-    createSlice : 프로그램 모듈
-    - Action Value와 Action Creator를 이제 직접 생성하지 않고 
-    - Slice API를 사용하여 하나로 만들어낸다. 
-
-    export
-    (1) configStore에 등록하기 위해서
-    (2) state.todoSlice의 상태를 컴포넌트에서 사용하도록 하기 위해서
-        store에 등록된 리듀서모듈에 대한 선택기 함수를 미리 생선함으로, 간결한 재사용을 위한 준비 
-    (3) Slice의 액션들을 컴포넌트에서 사용하도록 하기 위해서 
-
-*/
