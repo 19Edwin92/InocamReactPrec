@@ -2,7 +2,7 @@ import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 // import { add_todoReducer, detele_todoReducer, update_todoReducer } from "../redux/modules/todoReducer"
 // import { add_todo, delete_todo, selectTodo, update_todo } from "../redux/modules/sliceTodo"
-import { __deleteTodosThunk, __postTodosThunk, __updateTodosThunk } from "../redux/modules/thunkTodo"
+import { __deleteTodosThunk, __getTodosThunk, __postTodosThunk, __updateTodosThunk } from "../redux/modules/thunkTodo"
 
 export const useTodos = () => {
   const [inputTitle, setInputTitle] = useState("")
@@ -57,21 +57,22 @@ export const useTodos = () => {
   }
 
   // DETELT
-  const onDeteleHandler =  (id) => () => {
+  const onDeteleHandler =  (id) => async () => {
     // dispatch(detele_todoReducer(id)) // 기존 Redux
     // dispatch(delete_todo(id)) // Redux - toolkit
-    dispatch(__deleteTodosThunk(id))
-    
+    await dispatch(__deleteTodosThunk(id))
+    await dispatch(__getTodosThunk())
   }
 
   // UPDATE
-  const onDoneHandler = (id) => () => {
+  const onDoneHandler = (id) => async () => {
     // dispatch(update_todoReducer(id)) //기존 Redux
     // dispatch(update_todo(id)) // Redux - toolkit
-    dispatch(__updateTodosThunk(id))
+    await dispatch(__updateTodosThunk(id))
+    await dispatch(__getTodosThunk())
   } 
 
   
   // return {inputTitle, inputContent, todoListStore, todoSlice, onChangeInput, onSubmitHandler, onDeteleHandler, onDoneHandler}   
-  return {inputTitle, inputContent, todoListStore, onChangeInput, onSubmitHandler, onDeteleHandler, onDoneHandler}   
+  return {dispatch, inputTitle, inputContent, todoListStore, onChangeInput, onSubmitHandler, onDeteleHandler, onDoneHandler}   
 }

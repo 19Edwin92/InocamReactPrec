@@ -1,13 +1,13 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from 'axios'
 
-const mswApi = axios.create({
-  baseURL:"http://react.com"
-})
-
-// const jsonApi = axios.create({
-//   baseURL:"http://localhost:3001"
+// const mswApi = axios.create({
+//   baseURL:"http://react.com"
 // })
+
+const jsonApi = axios.create({
+  baseURL:"http://localhost:3001"
+})
 
 // 01 initalState
 const initialState = {
@@ -21,7 +21,8 @@ const __getTodosThunk = createAsyncThunk(
   "getTodos",
   async (_, thunkAPI) => {
     try {
-      const res = await mswApi.get('/todos')
+      // const res = await mswApi.get('/todos')
+      const res = await jsonApi.get('/todos')
       return thunkAPI.fulfillWithValue(res.data)
     } catch (error) { 
       return thunkAPI.rejectWithValue(error)
@@ -33,7 +34,8 @@ const __postTodosThunk = createAsyncThunk(
   "postTodos",
   async (payload, thunkAPI) => {
     try {
-      const res = await mswApi.post('/todos', payload)
+      // const res = await mswApi.post('/todos', payload)
+      const res = await jsonApi.post('/todos', payload)
       return thunkAPI.fulfillWithValue(res.data)
     } catch (error) { 
       return thunkAPI.rejectWithValue(error)
@@ -45,8 +47,10 @@ const __deleteTodosThunk = createAsyncThunk(
   "deleteTodos",
   async (payload, thunkAPI) => {
     try {
-      const res = await mswApi.delete(`/todos/${payload}`)
-      return thunkAPI.fulfillWithValue(res.data)
+      // const res = await mswApi.delete(`/todos/${payload}`)
+      // return thunkAPI.fulfillWithValue(res.data)
+      await jsonApi.delete(`/todos/${payload}`)
+      return thunkAPI.fulfillWithValue()
     } catch (error) { 
       return thunkAPI.rejectWithValue(error)
     }
@@ -57,8 +61,10 @@ const __updateTodosThunk = createAsyncThunk(
   "updateTodos",
   async (payload, thunkAPI) => {
     try {
-      const res = await mswApi.patch(`/todos/${payload}`)
-      return thunkAPI.fulfillWithValue(res.data)
+      // const res = await mswApi.patch(`/todos/${payload}`)
+      // return thunkAPI.fulfillWithValue(res.data)
+      await jsonApi.patch(`/todos/${payload.id}`, {...payload, state:!payload.state})
+      return thunkAPI.fulfillWithValue()
     } catch (error) { 
       return thunkAPI.rejectWithValue(error)
     }
@@ -96,7 +102,8 @@ const todoThunk = createSlice({
       .addCase(__postTodosThunk.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = "";
-        state.todos = action.payload;
+        // state.todos = action.payload; // msw
+        state.todos = [...state.todos, action.payload]; // json-server
       })
       .addCase(__postTodosThunk.rejected, (state, action) => {
         state.isLoading = false;
@@ -111,7 +118,7 @@ const todoThunk = createSlice({
       .addCase(__deleteTodosThunk.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = "";
-        state.todos = action.payload;
+        // state.todos = action.payload; // msw
       })
       .addCase(__deleteTodosThunk.rejected, (state, action) => {
         state.isLoading = false;
@@ -126,7 +133,7 @@ const todoThunk = createSlice({
       .addCase(__updateTodosThunk.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = "";
-        state.todos = action.payload;
+        // state.todos = action.payload; // msw
       })
       .addCase(__updateTodosThunk.rejected, (state, action) => {
         state.isLoading = false;

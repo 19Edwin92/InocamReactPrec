@@ -1,51 +1,16 @@
 {
   "todos": [
     {
-      "id": 1,
-      "title": "리액트 연습하기",
-      "content": "리액트트 말이지 ㅋㅋㅋ 재밌어(1)",
-      "state": false
-    },
-    {
-      "id": 2,
-      "title": "리액트 연습하기",
-      "content": "리액트트 말이지 ㅋㅋㅋ 재밌어(2)",
-      "state": false
-    },
-    {
-      "id": 3,
-      "title": "리액트 연습하기",
-      "content": "리액트트 말이지 ㅋㅋㅋ 재밌어(3)",
-      "state": false
-    },
-    {
-      "id": 1688830794911,
-      "title": "afds",
-      "content": "asdfasdf",
-      "state": false
-    },
-    {
-      "id": 1688830858709,
+      "id": 1688834823215,
       "title": "asdf",
-      "content": "asdf",
-      "state": false
+      "content": "asdasdf",
+      "state": true,
+      "1688834823215": ""
     },
     {
-      "id": 1688830943979,
-      "title": "asdf",
-      "content": "asdfasdfa",
-      "state": false
-    },
-    {
-      "id": 1688830989072,
-      "title": "asdf",
-      "content": "asdfasdf",
-      "state": false
-    },
-    {
-      "id": 1688831079727,
-      "title": "asdf",
-      "content": "asdfasdfa",
+      "id": 1688835926784,
+      "title": "ㅁㄴㅇㄹㅁㄴㅇㄹ",
+      "content": "ㅁㄴㅇㄹㅁㄴㅇㄹㅁㄴㅇㄹㅁ",
       "state": false
     }
   ]

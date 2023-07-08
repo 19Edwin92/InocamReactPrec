@@ -10,7 +10,8 @@ import { useGetTodoQuery } from "../api/getTodoApi";
 function Home() {
   const dispatch = useDispatch()
   useLayoutEffect(() => {dispatch(__getTodosThunk())}, [dispatch]) 
-  const {isLoading:thunkLoading, todos, isError:thunkisError} = useSelector(selectTodo)
+  // const {isLoading:thunkLoading, todos, isError:thunkisError} = useSelector(selectTodo)
+  const {isLoading:thunkLoading, isError:thunkisError} = useSelector(selectTodo)
   const {data, isLoading, isError} = useGetTodoQuery()
   // const {data:data2} = useGetTodosAxiosQuery()
   if (isLoading || thunkLoading) return <div>로딩중</div>

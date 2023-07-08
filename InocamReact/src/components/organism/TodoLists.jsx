@@ -7,7 +7,7 @@ import { selectTodo } from "../../redux/modules/thunkTodo";
 
 
 function TodoLists({title, type}) {
-  // const { todoSlice,onDeteleHandler,onDoneHandler} = useTodos();
+  // const { todoSlice, onDeteleHandler,onDoneHandler} = useTodos();
   const {onDeteleHandler,onDoneHandler} = useTodos();
   const {isLoading, error, todos} = useSelector(selectTodo)
 
@@ -33,7 +33,8 @@ function TodoLists({title, type}) {
                 </Styled.TodoBtn>
                 <Styled.TodoBtn
                   color="teal"
-                  onClick={onDoneHandler(item.id)}>
+                  // onClick={onDoneHandler(item.id)}> // msw
+                  onClick={onDoneHandler(item)}> {/* json-server */}
                   {item.state ? "취소" : "완료"}
                 </Styled.TodoBtn>
               </Styled.TodobtnLayout>
