@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useReducer, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import axios from 'axios'
 import {styled} from 'styled-components'
 
@@ -56,7 +56,7 @@ function App() {
   
   useEffect(()=>{  
     getTodos() // AXIOS POST (3) 서버에 다시 요청을 해서, todos와 서버의 데이터를 동기화 합니다. 
-  },[todos]) // 의존선배열이 변경되면, useEffect 그때마다 동작을 하니까 
+  },[setTodos]) // 의존선배열이 변경되면, useEffect 그때마다 동작을 하니까 
 
   // AXIOS POST 기능구현 : CRUD (2) CREATE
   const [newtodos, setNewTodos] = useState("")
@@ -66,10 +66,10 @@ function App() {
 
   const onSubmitHandler = async (e) => {
     e.preventDefault()
-    await instance.post("/todos", {id:Date.now(), title:newtodos})  // 비동기통신 // (1) 서버를 업데이트 
-    setTodos([...todos, {id:Date.now(), title:newtodos}]) // (2) 리렌더링을 발생시키기 위해서, todos의 상태를 변경합니다. 
+    setTodos([...todos, {id:Date.now(), title:newtodos}]) // (1) 리렌더링을 발생시키기 위해서, todos의 상태를 변경합니다. // 리렌더링 준비
+    await instance.post("/todos", {id:Date.now(), title:newtodos})  // 비동기통신 // (2) 서버를 업데이트 
     setNewTodos("")
-  }
+  } // 리렌더링 발생
 
   return (
     <div>
@@ -88,12 +88,13 @@ export default App
 const Todos = ({todoid, title, todos, setTodos}) => {
     // AXIOS DELETE 기능구현 : CRUD (3) DELETE
   const onDeleteHandler = async () => {
-    await instance.delete(`/todos/${todoid}`) // 비동기통신 // (1) 서버를 업데이트 
-    setTodos([...todos.filter(todo => todo.id !== {todoid})]) // (2) 리렌더링을 발생시키기 위해서, todos의 상태를 변경합니다. 
-  }
+    setTodos([...todos.filter(todo => todo.id !== todoid)]) // (1) 리렌더링을 발생시키기 위해서, todos의 상태를 변경합니다.  // 리렌더링 준비
+    await instance.delete(`/todos/${todoid}`) // 비동기통신 // (2) 서버를 업데이트 
+  } // 리렌더링 발생
 
   // AXIOS UPDATE 기능구현 : CRUD (4) UPDATE
   const [update,setUpdate] = useState(false) // 조건부 렌더링
+  const inputRef = useRef(null)
   const onUpdateHandler = () => {
     setUpdate(pre => !pre)
   }
@@ -103,26 +104,29 @@ const Todos = ({todoid, title, todos, setTodos}) => {
     setUpdateTodos(e.target.value)
   }
 
-  const onSubmitHandler = (todoid) => async (e) => {
+  const onSubmitHandler = () => async (e) => {
     e.preventDefault()
-    await instance.patch(`/todos/${todoid}`, {title:updatetodos}) // PATCH(일부데이터만 수정할 때), PUT(완전히 다 바꿈, 덮어쓰기) (1) 서버를 업데이트
-    setTodos([...todos.map(todo => todo.id === todoid ? {...todo, title:updatetodos} : todo)]) // (2) 리렌더링 
+    setTodos([...todos.map(todo => todo.id === todoid ? {...todo, title:updatetodos} : todo)]) // (1) 리렌더링 // 리렌더링 준비
+    await instance.patch(`/todos/${todoid}`, {title:updatetodos}) // PATCH(일부데이터만 수정할 때), PUT(완전히 다 바꿈, 덮어쓰기) (2) 서버를 업데이트
     setUpdate(pre=>!pre)
-  }
+  } // 리렌더링 발생
+
+  useEffect(() => {
+    update && inputRef.current.focus();
+  }, [update]);
+  
 
   return (
     <TodosBox>
         <button onClick={onDeleteHandler}>삭제</button>
         <button onClick={onUpdateHandler}>수정</button>
-        {update 
-          ? (<>
-              <p>{title}</p>
-              <Form onSubmit={onSubmitHandler(todoid)} $state="update">
-                <input value={updatetodos} type='text' onChange={onChangeInput} maxLength={10}/>
-              </Form>
-            </>)
-          : <p>{title}</p>}
+        <p>{title}</p>
+        {update &&       
+        <UpdateForm onSubmit={onSubmitHandler(todoid)} $state="update" $position={update}>
+          <input ref={inputRef} value={updatetodos} type='text' onChange={onChangeInput} maxLength={10}/>
+        </UpdateForm>}
     </TodosBox>
+    
   )
 }
 
@@ -145,6 +149,10 @@ const Form = styled.form`
     width: 100%;
     height: 30px;
   }
+`
+
+const UpdateForm = styled(Form)`
+  bottom: ${({$position}) => $position ? "0" : "-50px"};
 `
 
 
