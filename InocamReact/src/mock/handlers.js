@@ -3,19 +3,19 @@ import { rest } from "msw";
 const todos = [
   {
     id : 1,
-    title : "리액트 연습하기",
+    title : "리액트 연습하기(1)",
     content : "리액트트 말이지 ㅋㅋㅋ 재밌어(1)",
     state : false
   },
   {
     id : 2,
-    title : "리액트 연습하기",
+    title : "리액트 연습하기(2)",
     content : "리액트트 말이지 ㅋㅋㅋ 재밌어(2)",
     state : false
   },
   {
     id : 3,
-    title : "리액트 연습하기",
+    title : "리액트 연습하기(3)",
     content : "리액트트 말이지 ㅋㅋㅋ 재밌어(3)",
     state : false
   }

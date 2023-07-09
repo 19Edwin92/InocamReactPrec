@@ -35,8 +35,10 @@ const __postTodosThunk = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       // const res = await mswApi.post('/todos', payload)
-      const res = await jsonApi.post('/todos', payload)
-      return thunkAPI.fulfillWithValue(res.data)
+      // const res = await jsonApi.post('/todos', payload)
+      // return thunkAPI.fulfillWithValue(res.data) // msw
+      await jsonApi.post('/todos', payload)
+      return thunkAPI.fulfillWithValue() // json-server
     } catch (error) { 
       return thunkAPI.rejectWithValue(error)
     }
@@ -103,7 +105,6 @@ const todoThunk = createSlice({
         state.isLoading = false;
         state.isError = "";
         // state.todos = action.payload; // msw
-        state.todos = [...state.todos, action.payload]; // json-server
       })
       .addCase(__postTodosThunk.rejected, (state, action) => {
         state.isLoading = false;

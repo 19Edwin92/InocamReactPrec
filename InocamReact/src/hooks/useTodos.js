@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 // import { add_todoReducer, detele_todoReducer, update_todoReducer } from "../redux/modules/todoReducer"
 // import { add_todo, delete_todo, selectTodo, update_todo } from "../redux/modules/sliceTodo"
 import { __deleteTodosThunk, __getTodosThunk, __postTodosThunk, __updateTodosThunk } from "../redux/modules/thunkTodo"
+import { useAddNewTodoMutation } from "../api/getAxiosTodoApi"
 
 export const useTodos = () => {
   const [inputTitle, setInputTitle] = useState("")
@@ -14,6 +15,9 @@ export const useTodos = () => {
 
   // Redux toolkit Slicex
   // const todoSlice = useSelector(selectTodo)
+
+  // RTK query
+  const [addNewPost] = useAddNewTodoMutation()
 
   // CREATE - INPUT
   const onChangeInput = (type) => (e) => {
@@ -29,7 +33,7 @@ export const useTodos = () => {
   }
 
   // CREATE - SUBMIT
-  const onSubmitHandler = (e) => {
+  const onSubmitHandler = async (e) => {
     e.preventDefault()
     const createTodo = {
       id:Date.now(),
@@ -51,7 +55,9 @@ export const useTodos = () => {
     inputTitle && inputContent && 
     // dispatch(add_todoReducer(createTodo)) // 기존 Redux
     // dispatch(add_todo(createTodo)) // Redux - toolkit
-    dispatch(__postTodosThunk(createTodo))
+    await dispatch(__postTodosThunk(createTodo))
+    await dispatch(__getTodosThunk())
+    addNewPost(createTodo)
     setInputTitle("")
     setInputContent("")
   }
