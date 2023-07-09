@@ -16,7 +16,7 @@ function App() {
 
   return (
     <div>
-      <p>JSON-Server</p>
+      <p>JSON-Server-Thunk</p>
       <Form onSubmit={onSubmitHandler}>
         <input
           value={newtodos}
