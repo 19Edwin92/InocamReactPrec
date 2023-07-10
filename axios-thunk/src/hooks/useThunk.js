@@ -1,18 +1,24 @@
 import { useDispatch, useSelector } from "react-redux"
 import { __deleteTodosThunk, __poseTodosThunk, __updateTodosThunk, selecttodoSlice } from "../redux/modules/todoSlice"
 import { useState } from "react"
+import { useDeleteTodoRTKMutation, useSetTodoRTKMutation, useUpdateTodoRTKMutation } from "../api/todoRTKquery"
 
 export const useThunk = (todoid, title) => {
   const dispatch = useDispatch()
   const {todos:todoSlice} = useSelector(selecttodoSlice)
 
 
-  const [newtodos, setNewTodos] = useState("")
+  const [newtodos, setNewTodos] = useState("") // Thunk input
+  const [newtodos2, setNewTodos2] = useState("") // RTK input
+
   const onChangeInput = (e) => {
-    setNewTodos(e.target.value)
+    const {name, value} = e.target
+    name === "thunk" && setNewTodos(value)
+    name === "RTK" && setNewTodos2(value)
   }
 
-    const onSubmitHandler = async (e) => {
+  // AXIOS POST 기능구현 : CRUD (2) POST
+  const onSubmitHandler = async (e) => {
     e.preventDefault()
     dispatch(__poseTodosThunk({id:Date.now(), title:newtodos})) // THUNK // AXIOS GET 기능구현 : CRUD (1) READ // (3) 서버와 동기화 
     setNewTodos("")
@@ -43,5 +49,30 @@ export const useThunk = (todoid, title) => {
     setUpdate((pre) => !pre);
   }; // 리렌더링 발생
 
-  return {todoSlice, newtodos, dispatch, onSubmitHandler, onChangeInput, onDeleteHandler,onUpdateHandler, onChangeupdate,onUpdateSubmitHandler,updatetodos ,update}
+    // RTK-QUERY_AXIOS POST 기능구현 : CRUD (2) POST
+    const [setTodoRTK] = useSetTodoRTKMutation()
+    const onSubmitRTKHandler = async (e) => {
+      e.preventDefault()
+      setTodoRTK({id:Date.now(), title:newtodos2})
+    } // 리렌더링 발생
+
+
+    // RTK-QUERY_AXIOS DELETE 기능구현 : CRUD (3) DELETE
+  const [deleteTodoRTK] = useDeleteTodoRTKMutation()
+   const onDeleteRTKHandler = (todoid) => async () => {
+    deleteTodoRTK(todoid); // THUNK // AXIOS GET 기능구현 : CRUD (1) READ // (3) 서버와 동기화
+  }; // 리렌더링 발생
+
+
+  // AXIOS UPDATE 기능구현 : CRUD (4) UPDATE
+  const [updateTodoRTK] = useUpdateTodoRTKMutation()
+  const onUpdateSubmitRTKHandler = (todoid) => async (e) => {
+    e.preventDefault();
+    updateTodoRTK({todoid, data:{title:updatetodos}})
+    setUpdate((pre) => !pre);
+  }; // 리렌더링 발생
+
+  
+
+  return {todoSlice, newtodos,newtodos2, dispatch, onSubmitHandler, onChangeInput, onDeleteHandler,onUpdateHandler, onChangeupdate,onUpdateSubmitHandler,updatetodos ,update ,onSubmitRTKHandler, onDeleteRTKHandler, onUpdateSubmitRTKHandler}
 }

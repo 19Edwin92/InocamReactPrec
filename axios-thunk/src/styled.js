@@ -1,4 +1,24 @@
-import { styled } from "styled-components"
+import { keyframes, styled } from "styled-components"
+
+const slideUp = keyframes`
+  from {
+    bottom: -50px;
+  }
+  
+  to {
+    bottom: 0;
+  }
+`
+
+const slideUpRTK = keyframes`
+  from {
+    bottom: -50px;
+  }
+  
+  to {
+    bottom: 50px;
+  }
+`
 
 const Form = styled.form`
   box-sizing: border-box;
@@ -8,23 +28,35 @@ const Form = styled.form`
   display: flex;
   align-items: center;
   position: fixed;
-  transition: 0.5ms linear;
+  transition: 0.25ms linear;
   left: 0;
   bottom: 0;
   margin: 0;
+  
 
   input {
     box-sizing: border-box;
     display: block;
     width: 100%;
     height: 30px;
+
+    &:focus {
+      outline: none;
+    }
   }
 `
 
 const UpdateForm = styled(Form)`
-  bottom: ${({$position}) => $position ? "0" : "-50px"};
+  animation:  ${slideUp} 0.2s linear; 
 `
 
+const RTKForm = styled(Form)`
+  background-color:${({$state}) => $state === "update" ? "green" : "blue"};
+  bottom: 50px;
+`
+const UpdateRTKForm = styled(RTKForm)`
+  animation:  ${slideUpRTK} 0.2s linear; 
+`
 
 const TodosBox = styled.div`
   box-sizing: border-box;
@@ -41,4 +73,4 @@ const TodosBox = styled.div`
   gap:4px
 `
 
-export {Form, UpdateForm, TodosBox} 
+export {Form,RTKForm, UpdateForm, UpdateRTKForm, TodosBox} 
