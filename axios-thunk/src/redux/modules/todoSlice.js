@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { instance } from "../../api/axiosInstance";
 
 // 비동기 ActionCreate는 만들어줘야 합니다. // ActionCreate 1개당 extraReducers 3개 만들어줘야 해요(pending, fulfilled, rejected) 프로미스죠 // 100% 성공보정이 되지 않기 때문에
+// 비동기 통신 GET - 서버에서 데이터 읽어오기
 const __getTodosThunk = createAsyncThunk(
   "getTodosThunk",
   async (_, thunkAPI) => {
@@ -14,6 +15,7 @@ const __getTodosThunk = createAsyncThunk(
   }
 );
 
+// 비동기 통신 POST - 서버에서 데이터 추가하기
 const __poseTodosThunk = createAsyncThunk(
   "postTodosThunk",
   async (payload, thunkAPI) => {
@@ -26,6 +28,7 @@ const __poseTodosThunk = createAsyncThunk(
   }
 );
 
+// 비동기 통신 DELET - 서버에서 데이터 삭제하기 
 const __deleteTodosThunk = createAsyncThunk(
   "deleteTodosThunk",
   async (payload, thunkAPI) => {
@@ -38,6 +41,7 @@ const __deleteTodosThunk = createAsyncThunk(
   }
 );
 
+// 비동기 통신 UPDATE - 서버에서 데이터 변경하기 
 const __updateTodosThunk = createAsyncThunk(
   "updateTodosThunk",
   async (payload, thunkAPI) => {
@@ -57,6 +61,7 @@ const todoSlice = createSlice({
     isLoading: false,
     isError: false,
   },
+  reducers:{},
   extraReducers: (builder) => {
     builder
       // __getTodosThunk
