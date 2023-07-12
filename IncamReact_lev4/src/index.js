@@ -6,11 +6,13 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
 import { ApiProvider } from '@reduxjs/toolkit/dist/query/react';
 import todortkquery from './redux/api/todortkquery';
+import { GlobalStyled } from './shared/GlobalStyled'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <BrowserRouter>
   <ApiProvider api={todortkquery}>
+    <GlobalStyled />
     <App />
   </ApiProvider>
   </BrowserRouter>

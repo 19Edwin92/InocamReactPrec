@@ -19,6 +19,7 @@ const todortkquery = createApi({
   baseQuery: axiosBaseQuery(),
   tagTypes: ["TODOS", "COMMENT"],
   endpoints: (builder) => ({
+    // CRUD
     getTodoRTK: builder.query({
       query: () => ({ url: "/todos", method: "get" }),
       providesTags: ["TODOS"],
@@ -32,44 +33,27 @@ const todortkquery = createApi({
       invalidatesTags: ["TODOS"],
     }),
     updateTodoRTK: builder.mutation({
-      query: (payload) => {
-        console.log(payload.content);
-        return {
-          url: `/todos/${payload.id}`,
-          method: "patch",
-          data: { content: payload.content },
-        };
-      },
+      query: (payload) => ({url: `/todos/${payload.id}`, method: "patch", data: { content: payload.content }}),
       invalidatesTags: ["TODOS"],
     }),
 
-    // 댓글관련 부분
+    // 댓글 CRUD 부분
     getCommentRTK: builder.query({
-      query: (payload) => ({
-        url: `/comments`,
-        method: "get",
-        types: { type: "comment", id: payload },
-      }),
+      query: (payload) => ({url: `/comments`,method: "get",types: { type: "comment", id: payload },}),
       providesTags: [`COMMENT`]
     }),
 
     postTodoCommentRTK: builder.mutation({
-      query: (payload) => {
-        return { url: `/comments`, method: "post", data: payload };
-      },
+      query: (payload) => ({ url: `/comments`, method: "post", data: payload }),
       invalidatesTags: ['COMMENT']
     }),
 
     deleteTodoCommentRTK: builder.mutation({
-      query: (payload) => {
-        return { url: `/comments/${payload}`, method: "delete" };
-      },
+      query: (payload) => ({ url: `/comments/${payload}`, method: "delete" }),
       invalidatesTags: ['COMMENT']
     }),
     updateTodoCommentRTK: builder.mutation({
-      query: (payload) => {
-        return { url: `/comments/${payload.id}`, method: "patch", data:{comment:payload.comment} };
-      },
+      query: (payload) => ({ url: `/comments/${payload.id}`, method: "patch", data:{comment:payload.comment} }),
       invalidatesTags: ['COMMENT']
     }),
 

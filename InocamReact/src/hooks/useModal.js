@@ -5,13 +5,14 @@ import { ModalBtnLayout, ModalCloseBtn,StBtn } from "../components/molecules/ino
 export const useModal = () => {
   const [modal, setModal] = useState(false);
   const [modal2, setModal2] = useState(false);
+
   const toggleBtnHandler = (setState) => () => {
     setState((pre) => !pre);
   };
 
   const ModalBtn = (<>
-    <StBtn children="open modal" onClick={toggleBtnHandler(setModal)}/>
-    <StBtn type='primary' color='pink' children="open modal" onClick={toggleBtnHandler(setModal2)}/>
+    <StBtn children="open modal" onClick={toggleBtnHandler(setModal)}/>  {/* 모달1번이 열리고 닫히고 */}
+    <StBtn type='primary' color='pink' children="open modal" onClick={toggleBtnHandler(setModal2)}/> {/* 모달2번이 열리고 닫히고 */}
   </>)
 
   const Styledmodal = (

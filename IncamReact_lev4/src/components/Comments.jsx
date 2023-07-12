@@ -4,7 +4,6 @@ import { useDeleteTodoCommentRTKMutation, useGetCommentRTKQuery, usePostTodoComm
 
 function Comments({id}) {
   const [show, setShow] = useState(false)
-  const [edit, setEdit] = useState(false)
   const [input, setInput] = useState({
     nackName:"",
     comment:""
@@ -80,7 +79,7 @@ const UpdateInput = ({comment}) => {
 const CommentsST = styled.div`
   position: absolute;
   width: 800px;
-  height: ${({$state}) => $state ? "400px" : "50px"};
+  height: ${({$state}) => $state ? "400px" : "30px"};
   background-color: #ffff6d;
   bottom: 0;
   overflow: hidden;

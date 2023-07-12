@@ -1,37 +1,47 @@
-import { css, styled } from "styled-components"
+import { css, styled } from "styled-components";
 
-const HomeLayout = styled.div`
-  box-sizing: border-box;
-  max-width: 1200px;
-  margin: 0 auto;
-  border: 1px solid black;
-`
-
-const Header = styled.header`
-  box-sizing: border-box;
-  width: 100%;
+// 상속할 css 메서드 목록 
+export const Flex = css`
   display: flex;
   justify-content: center;
   align-items: center;
 `
 
+const Layout = styled.div`
+  max-width: 1200px;
+  height: 100vh;
+  margin: 0 auto;
+  overflow: auto;
+`;
+
+const Linner = styled.section`
+  padding: ${({$padding}) => $padding};
+`
+
+const Header = styled.header`
+  ${Flex}
+  height: 50px;
+  border-bottom: 1px solid #ddd;
+  padding: 0 12px;
+`;
+
 const HeaderSectionL = styled.section`
-  box-sizing: border-box;
-  display: flex;
+  ${Flex}
   justify-content: start;
-  align-items: center;
   flex: 1 1 0;
   padding: 20px;
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: 800;
-  ${({type}) => type === "button" && css`
-    cursor: pointer;
-  `}
-`
+  ${({ type }) =>
+    type === "button" &&
+    css`
+      cursor: pointer;
+    `}
+`;
 
 const HeaderSectionR = styled(HeaderSectionL)`
   justify-content: end;
-`
+`;
 
 const HomeActicle = styled.article`
   box-sizing: border-box;
@@ -41,18 +51,25 @@ const HomeActicle = styled.article`
   border: 1px solid orange;
   margin: 10px 0;
   border-radius: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  ${Flex}
 
-  ${({type}) => type === "button" && css`
-    cursor: pointer;
-  `}
+  ${({ type }) =>
+    type === "button" &&
+    css`
+      cursor: pointer;
+    `}
 
   &:hover {
     color: white;
     background-color: orange;
   }
-`
+`;
 
-export { HomeLayout, Header, HeaderSectionL, HeaderSectionR, HomeActicle, }
+export { 
+  Layout, 
+  Linner,
+  Header, 
+  HeaderSectionL, 
+  HeaderSectionR, 
+  HomeActicle 
+};
