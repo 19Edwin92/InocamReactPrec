@@ -13,7 +13,7 @@ function Header() {
       {/* <Butterfly /> */}
 
       <StyledHeader>
-        <div style={{color:`${color}` || "black"}}>My Todo List</div>
+        <div style={{color:`${color}` || "black"}}>My FrentEnd Delopment Study</div>
         <div>React</div>
       </StyledHeader>
       <ul style={{display:"flex", gap:"1rem", padding:"0"}}>
