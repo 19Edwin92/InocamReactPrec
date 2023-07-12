@@ -13,7 +13,10 @@ function DetailList() {
     {data && data.map(todo => <HomeActicle key={todo.id} type="button" onClick={()=>navigate(`/detail/${todo.id}`)}>
       <h2>{todo.title}</h2>
       <p>작성자 : {todo.nackName}</p>
-      <button onClick={() => deleteRTKquery(todo.id)}>삭제하기</button>
+      <button onClick={(e) => {
+        e.stopPropagation()
+        deleteRTKquery(todo.id)
+      }}>삭제하기</button>
       </HomeActicle>)}
     </>
   )

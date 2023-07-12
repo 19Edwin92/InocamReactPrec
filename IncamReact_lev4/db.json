@@ -1,18 +1,5 @@
 {
-  "todos": [
-    {
-      "id": 0,
-      "title": "리액트 배우기",
-      "content": "수정(1)ddddasdfadsf",
-      "nackName": "하하"
-    },
-    {
-      "nackName": "dd",
-      "title": "dd",
-      "content": "ddddd",
-      "id": 1
-    }
-  ],
+  "todos": [],
   "comments": [
     {
       "id": 1689085903782,
