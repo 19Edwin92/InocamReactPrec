@@ -1,31 +1,71 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { GlobalStyle, Layout } from "./styled";
 import { Canvas, useFrame } from "@react-three/fiber";
-// import { Box } from '@react-three/drei'
-
-const SpinningMesh = ({position}) => {
+import { MeshWobbleMaterial, OrbitControls } from '@react-three/drei' // @react-three/drei의 softshadow "@react-three/fiber"; 8.14.0 이상부터
+import { useSpring, a } from '@react-spring/three' // 애니메이션을 활용하기 위해서는 기존의 mesh를 확장해야 합니다. 그리고, 이를 useSpring 를 통해서 넣어줄 수 있습니다. 
+ 
+// softShadows() 동작되지 않음
+const SpinningMesh = ({ position, args, color }) => {
   const meshRef = useRef(null);
   useFrame(
     () => (meshRef.current.rotation.x = meshRef.current.rotation.y += 0.01)
   );
+  const [expend, setExpend] = useState(false);
+  const props = useSpring({
+    scale:expend ? [1.4, 1.4, 1.4] : [1,1,1]
+  })
+
   return (
-    <mesh ref={meshRef} position={position}>
-      {/* <circleGeometry attach="geometry" args={[1, 15]} />  */}
-      <boxGeometry attach="geometry" args={[1, 1, 1]} />
-      <meshStandardMaterial attach="material" color="lightblue"/>
-    </mesh>
+    <a.mesh  
+      onClick={()=>setExpend(!expend)}
+      scale={props.scale}
+      castShadow ref={meshRef} position={position}>
+      <boxGeometry attach="geometry" args={args} />
+      {/* <meshStandardMaterial attach="material" color={color} /> */} 
+      <MeshWobbleMaterial  attach="material" color={color} speed={1} factor={0.6}  />
+    </a.mesh>
   );
 };
+
+/* meshStandardMaterial 에서는 위 아래가 안되는듯 */
 
 function App() {
   return (
     <Layout>
       <GlobalStyle />
-      <Canvas colorManagement camera={{position:[-5, 2, 10], fov:60}}> 
-        <ambientLight intensity={0.3}/>
-        <SpinningMesh position={[-2, 1, -5]}/>
-        <SpinningMesh position={[0, 1, 0]}/>
-        <SpinningMesh position={[5, 1, -2]}/>
+      <Canvas
+        shadows 
+        colormanagement="linear" 
+        camera={{ position: [-5, 2, 10], fov: 60 }}>
+        <ambientLight intensity={0.3} />
+        <directionalLight
+          castShadow
+          position={[0, 10, 0]}
+          intensity={1.5}
+          shadow-mapSize-width={1024}
+          shadow-mapSize-height={1024}
+          shadow-camera-far={50}
+          shadow-camera-left={-10}
+          shadow-camera-right={10}
+          shadow-camera-top={10}
+          shadow-camera-bottom={-10}
+        />
+        <pointLight position={[-10, 0, -20]} intensity={0.5} />
+        <pointLight position={[0, -10, 0]} intensity={1.5} />
+
+        <group>
+          <mesh receiveShadow rotation={[-Math.PI / 2, 0, 0]} position={[0, -3, 0]}>
+            <planeGeometry attach="geometry" args={[100, 100]} />
+            <shadowMaterial attach="material" opacity={0.3}/>
+            {/* <meshStandardMaterial attach="material" color="yellow" /> */}
+          </mesh>
+          <SpinningMesh speed={6} position={[-2, 1, -5]} color="pink" />
+          <SpinningMesh speed={2} position={[0, 1, 0]} args={[3, 2, 1]} color="lightblue" />
+          <SpinningMesh speed={6} position={[5, 1, -2]} color="pink" /> 
+        </group>
+    
+
+        <OrbitControls />
       </Canvas>
     </Layout>
   );
@@ -38,6 +78,7 @@ export default App;
   기타, HTML 태그들은 <Canvas> 외부에서 선언해야 한다. 
 
   Three.js 맥락에서 Mesh, BufferGeometry 및 Material은 3D 그래칙을 렌더링 하는 데 사용되는 기본 구성 요소로
+  그리고, <Canvas> 내부에서는 주석도 텍스트 취급된다는 것을 기억하자.  
 
   1) 
   Mesh : " 형상과 재질을 결합한 3D 개체를 "
@@ -122,29 +163,35 @@ export default App;
   
   8) camera={{for : 60}}
     카메라의 화각을 지정할 수 있다. 
+
+
+  9) 과거문법 수정
+   <Canvas
+        shadows // https://sbcode.net/react-three-fiber/shadows/ // shadowMap 과거문법
+        colormanagement="linear" // colorManagement 과거문법
+        camera={{ position: [-5, 2, 10], fov: 60 }}
+      >  
+
+  10) 그림자 관련
+          <group>
+          <mesh receiveShadow rotation={[-Math.PI / 2, 0, 0]} position={[0, -3, 0]}>
+            <planeGeometry attach="geometry" args={[100, 100]} />
+            <shadowMaterial attach="material" opacity={0.3}/>
+            // <meshStandardMaterial attach="material" color="yellow" />
+            </mesh>
+            </group> 
+            
+  11)  <OrbitControls /> 
+      드디어 회전이 된다. 확대 축소가 됩니다.  
+      
+  12) 반응형을 위해서, 그룹 안에 넣습니다. 
+    <SpinningMesh speed={6} position={[-2, 1, -5]} color="pink" />
+    <SpinningMesh speed={2} position={[0, 1, 0]} args={[3, 2, 1]} color="lightblue" />
+    <SpinningMesh speed={6} position={[5, 1, -2]} color="pink" />    
+    
+
+  13) pointLight 포인트 조명  
 */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // import React, { useState } from "react";
 // import { Canvas, useFrame } from "@react-three/fiber";
