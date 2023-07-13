@@ -10,7 +10,7 @@ export const __getToDo = createAsyncThunk(
   '__getToDo',
   async (_, thunkAPI) => {
     try {
-      let res = await axios.get('http://localhost:3001/todos')
+      let res = await axios.get('https://jsonserveredwin.vercel.app/todos')
       return thunkAPI.fulfillWithValue(res.data)
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message)
@@ -23,7 +23,7 @@ export const __addToDo = createAsyncThunk(
   async (payload, thunkAPI) => {
       await waitTwoSeconds()
       try {
-        await axios.post('http://localhost:3001/todos', payload)
+        await axios.post('https://jsonserveredwin.vercel.app/todos', payload)
         return payload
       }
       catch (error) {
@@ -37,7 +37,7 @@ export const __deleteTodo = createAsyncThunk(
   async (payload, thunkAPI) => {
     await waitTwoSeconds()
     try {
-      await axios.delete(`http://localhost:3001/todos/${payload}`)
+      await axios.delete(`https://jsonserveredwin.vercel.app/todos/${payload}`)
       return payload
     }
     catch (error) {
