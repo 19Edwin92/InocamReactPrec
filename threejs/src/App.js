@@ -1,18 +1,31 @@
-import React from "react";
+import React, { useRef } from "react";
 import { GlobalStyle, Layout } from "./styled";
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useFrame } from "@react-three/fiber";
 // import { Box } from '@react-three/drei'
+
+const SpinningMesh = ({position}) => {
+  const meshRef = useRef(null);
+  useFrame(
+    () => (meshRef.current.rotation.x = meshRef.current.rotation.y += 0.01)
+  );
+  return (
+    <mesh ref={meshRef} position={position}>
+      {/* <circleGeometry attach="geometry" args={[1, 15]} />  */}
+      <boxGeometry attach="geometry" args={[1, 1, 1]} />
+      <meshStandardMaterial attach="material" color="lightblue"/>
+    </mesh>
+  );
+};
 
 function App() {
   return (
     <Layout>
       <GlobalStyle />
-      <Canvas>
-        <mesh>
-          {/* <circleGeometry attach="geometry" args={[1, 15]} />  */} 
-          <boxGeometry attach="geometry"  args={[1, 1, 1]} />
-          <meshStandardMaterial attach="material"/>
-        </mesh> 
+      <Canvas colorManagement camera={{position:[-5, 2, 10], fov:60}}> 
+        <ambientLight intensity={0.3}/>
+        <SpinningMesh position={[-2, 1, -5]}/>
+        <SpinningMesh position={[0, 1, 0]}/>
+        <SpinningMesh position={[5, 1, -2]}/>
       </Canvas>
     </Layout>
   );
@@ -26,8 +39,8 @@ export default App;
 
   Three.js 맥락에서 Mesh, BufferGeometry 및 Material은 3D 그래칙을 렌더링 하는 데 사용되는 기본 구성 요소로
 
-  Mesh : 
-  " 형상과 재질을 결합한 3D 개체를 "
+  1) 
+  Mesh : " 형상과 재질을 결합한 3D 개체를 "
   3D 모델을 나타내는 객체로, 형성과 재료를 결합하여 모델의 시각적 모양과 속성을 정의한다. 
   형상은 모델의 모양과 구조를 정의하고, 재료는 모델의 표면이 빛과 상호 작용하는 방식을 정의한다. 
   메시는 geometry와 material 지정하여 생성하고, 형상은 정육면체, 구 또는 원통과 같은 미리 정의된 모양이거나 꼭지점과 면을 사용하여 정의된 사용자 지정 형상일 수 있습니다. 
@@ -35,7 +48,7 @@ export default App;
   메시가 생성되면 장면에 추가하고 Three.js의 렌더러를 사용하여 렌더링할 수 있다. 
   즉 메시는 위치, 회전 및 배율을 조작하여 원하는 변형 및 애니메이션은 얻는다. 
 
-  [ 강의 ](https://www.youtube.com/watch?v=fdtqqyeKRJk)
+  [ 강의 ](https://www.youtube.com/watch?v=fdtqqyeKRJk) // 29분 
   <boxBufferGeometry> >> " boxGeometry "
   1) attach : Three.js 개체의 특정부분에 연결하는데 사용한다. 지오메트리를 부탁하면 객체의 일부가 되어 모양을 정의한다. 
 
@@ -56,13 +69,14 @@ export default App;
   첫 숫자는 크기를 나타낸다. 
   두번째 숫자는 각도를 나타내는데, 각각의 각형을 나타낼 수 있다. 
 
-
+  2) 
   BufferGeometry :
   " 효율적인 렌더링을 위해 셩상 데이터의 최적화된 표현을 제공 "
   BufferGeometry는 Three.js에서 기하학 데이터의 최적화된 표현으로, 지오메트리 형식에 비해 많은 양의 지오메트리를 렌더링하는 데 더 효율적이다. 
   정점, 면, 법선 및 UV 좌표와 같은 기하학적 데이터는 일반적으로 JS 배열에 저장된다. 
   BufferGeometry는 이러한 배열을 가져와 렌더링을 위해 GPU에서 직접 사용할 수 있는 저수준 버퍼로 변환한다. 
 
+  3)
   Material :
   " 색상, 질감 및 음영과 같은 개체 표현의 시각적 속성을 정의 "
   Three.js 에서 객체 표면의 시각적 속성을 정의합니다. 
@@ -70,7 +84,67 @@ export default App;
   재료는 색상, 방출 색상, 불투명도, 투명도, 광택, 거칠기, 금속성 등과 같은 속성을 가질 수 있습니다.
   또한 확산 맵, 반사 맵, 일반 맵 및 변위 맵과 같은 보다 사실적인 렌더링을 위해 텍스처를 통합할 수 있습니다.
 
+  4) 
+  useFrame :
+  렌더링 루프에서 사용자 지정 애니메이션 및 업데이트를 수행하는 유틸리티로 제공된다. 이 후크는 WebGL 렌더링의 모든 프레임 업데이트에서 호출될 함수를 정의한다.
+  개체 위치 업데이트, 재질 속성 변경 딩 다른 애니메이션 트리거와 같이 프레임당 실행하는 모든 논리를 포함한다. 
+
+  useFrame(
+    () => (meshRef.current.rotation.y += 0.05)   // y축만 회전을 하게 할 수 있고 
+    // () => (meshRef.current.rotation.x += 0.05) // x축만 회전을 하게 할 수 있고
+    // () => (meshRef.current.rotation.x = meshRef.current.rotation.y += 0.01) // x,y축을 같이 설정할 수 있다. 
+    // () => (meshRef.current.rotation.x += 0.01, meshRef.current.rotation.y += 0.05) // 또한 각각 다르게 설정해 줄 수도 있다. 
+  );
+
+    x축과 y축을 물론 별개로 설정할 수도 있다. 
+
+  5) <ambientLight/>
+    intensity={0}
+    ambientLight는 광원의 강도 또는 밝기를 결정한다. 이를 통해 장면의 전체 조명에 기여하는 정도를 제어한다. 
+    0.1 : 주변광이 상대적으로 적은 양의 빛을 발산하여 전체 조면이 더  어두워진다는 것을 의미한다. 
+    이때 음수로 기록할 수 있는데, 이에 대한 값은 동작은 하지만 컨텍스트에서 의미가 없기에, 0 보다 큰 양수를 주어야 한다. 
+    1 : 중립 강도로 간주되며, 1.0 보다 큰 값은 밝기를 증가시키고, 0.0 ~ 1.0 사이의 값은 밝기를 감소시킨다. 
+
+    <meshStandardMaterial attach="material" color="blue" />
+    만약 빛이 주어지지 않는 상태에서 meshStandardMaterial의 색을 주려고 해도 검은색이었던 이유가 바로 그것이다.
+    일정량의 빛이 있어야 색이 표현된다. 마치 검은 밤에 색을 분별하라는 이야기였던 것이다. 
+
+  6) <Canvas colorManagement>
+    colorManagement : 렌더링된 장면에 대산 색상 관리를 활성화하기 위한 속성이다.
+    다양한 장치 및 색상 공간에서 색상이 정확하고 일관되게 표시되도록 한다. 장면의 색 공간과 출력 장치의 색 공간 간에 색상이 적절하게 변환되도록하여 정확한 색상 표현이 되도록 
+
+
+  7) camera={{position:[5, 0, 5]}}
+
+    첫번째 : 카메라의 좌우각도 정수는 왼쪽으로, 음수는 오른쪽으로  
+    두번째 : 음수는 카메라의 위치가 아래로 가며 위를 향해보고, 정수는 카메라의 위치가 위로가며 아래를 내려본다. 
+    세번째 : 최소는 1 숫자가 증가할 수록 줌아웃시킨다.
+  
+  8) camera={{for : 60}}
+    카메라의 화각을 지정할 수 있다. 
 */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // import React, { useState } from "react";
 // import { Canvas, useFrame } from "@react-three/fiber";
