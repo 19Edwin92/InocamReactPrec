@@ -21,7 +21,3 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
-/IncamReact_lev4
-/axios-thunk
-/threejs
