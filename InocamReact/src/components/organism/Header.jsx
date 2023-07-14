@@ -1,15 +1,15 @@
 import React from "react";
 import { NavLink, Outlet } from "react-router-dom";
-import { StyledHeader } from "../../styled"
+import { Layout, StyledHeader } from "../../styled"
 // import Butterfly from "../Butterfly";
 import { useSelector } from "react-redux";
 import { selectColor } from "../../redux/modules/velopertColor";
 
 function Header() {
   const color = useSelector(selectColor)
-  const link = ["velopertcolor", "velopertcounter", "draganddrop", "kakao", "animaition", "styledcomponents"]
+  const link = ["velopertcolor", "velopertcounter", "draganddrop", "kakao", "animaition", "styledcomponents", "interactive"]
   return (
-    <>
+    <Layout>
       {/* <Butterfly /> */}
 
       <StyledHeader>
@@ -22,7 +22,7 @@ function Header() {
       </ul>
       <hr/>
       <Outlet/>
-    </>
+    </Layout>
   );
 }
 

@@ -12,8 +12,9 @@ const SpinningMesh = ({ position, args, color }) => {
   );
   const [expend, setExpend] = useState(false);
   const props = useSpring({
-    scale:expend ? [1.4, 1.4, 1.4] : [1,1,1]
+    scale:expend ? [3, 3, 3] : [1,1,1]
   })
+  console.log("렌더링이 되니?");
 
   return (
     <a.mesh  
