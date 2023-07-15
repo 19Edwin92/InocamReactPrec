@@ -1,5 +1,7 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { styled } from "styled-components";
+
+
 
 function Interactive() {
   const scrollSection1 = useRef(null);
@@ -7,6 +9,92 @@ function Interactive() {
   const scrollSection3 = useRef(null);
   const scrollSection4 = useRef(null);
 
+  // 변수 모음공간
+  let yoffset = 0 // window.pageYOffset 대신 사용할 변수
+  let preScrollHeigth = 0 // 상위에 있는 섹션들의 스크롤의 합
+  let currentScene = 0 // 현재 뷰포트에 등장한 section
+
+  
+
+  /* 섹션2 : 스크롤을 담은객체를 생성합니다. */ 
+  const screnInfo = [
+    {
+      //scrollSection1
+      type:"styicky",
+      heightNum: 5, // 브라우저 높이의 5배로 scrollHeight를 세팅, 페이지를 연 디바이스 별로 대응하기 위함입니다. 
+      scrollHeight : 0,
+      objs : {
+        contaniner : scrollSection1
+      } 
+    },
+    {
+      //scrollSection2
+      type:"nomarl",
+      heightNum: 5, 
+      scrollHeight : 0,
+      objs : {
+        contaniner : scrollSection2
+      } 
+    },
+    {
+      //scrollSection3
+      type:"styicky",
+      heightNum: 5, 
+      scrollHeight : 0, 
+      objs : {
+        contaniner : scrollSection3
+      }
+    },
+    {
+      //scrollSection4
+      type:"nomarl",
+      heightNum: 5, 
+      scrollHeight : 0, 
+      objs : {
+        contaniner : scrollSection4
+      }
+    }
+  ]
+
+  const setLayout = () => {
+    // 각 스크롤섹션의 높이 설절
+    for (let i =0; i< screnInfo.length; i++) {
+      screnInfo[i].scrollHeight = screnInfo[i].heightNum * window.innerHeight;
+      screnInfo[i].objs.contaniner.current.style.height = `${screnInfo[i].scrollHeight}px`
+    }
+  }
+
+
+  const scrollLoop = () => {
+    // console.log(window.pageYOffset);  // 화면에 스크롤 위치가 표시됩니다. 
+    // 몇번째 section이냐? 
+      preScrollHeigth = 494
+      for (let i = 0; i < currentScene; i++) {
+      preScrollHeigth += screnInfo[i].scrollHeight;
+    }
+    // preScrollHeigth += 900 
+    if(yoffset > preScrollHeigth + screnInfo[currentScene]?.scrollHeight) {
+      currentScene++
+     }
+    if (yoffset < preScrollHeigth) {
+      currentScene--
+    }
+    console.log(`yoffset : ${yoffset}, preScrollHeigth : ${preScrollHeigth} currentScene: ${currentScene}`);
+  }
+
+  useEffect(()=> {
+    setLayout()
+    window.addEventListener('resize', setLayout);
+    window.addEventListener('scroll', ()=> {
+      // 스크롤은 복잡하기에, 여러 함수들이 기록될 것입니다.
+      yoffset = window.scrollY  // pageYOffset 현재 사용되지 않음
+      scrollLoop()
+    })
+    return () => {
+      window.removeEventListener('resize', setLayout);
+    }
+  },[yoffset])    
+  
   return (
     <Container>
       {/* 헤더 부분 */}
@@ -29,7 +117,7 @@ function Interactive() {
         </LocalNavLinks>
       </LocalNav>
 
-      {/* 인터렉션 부분 */}
+{/* 인터렉션 부분 scrollSection1 */}
       <ScrollSection ref={scrollSection1}>
         <ScrollSectionH1>AirMug Pro</ScrollSectionH1>
         <MainMsg>
@@ -62,6 +150,7 @@ function Interactive() {
         </MainMsg>
       </ScrollSection>
 
+{/* 인터렉션 부분 scrollSection2 */}
       <ScrollSection ref={scrollSection2}>
         <Desc>
           <strong>보통스크롤 영역</strong>
@@ -91,6 +180,8 @@ function Interactive() {
           debitis tenetur odio amet.
         </Desc>
       </ScrollSection>
+
+{/* 인터렉션 부분 scrollSection3 */}
       <ScrollSection ref={scrollSection3}>
         <MainMsg>
           <Desc2>
@@ -114,6 +205,8 @@ function Interactive() {
           <Pin />
         </StyickyElem>
       </ScrollSection>
+
+{/* 인터렉션 부분 scrollSection4 */}
       <ScrollSection ref={scrollSection4}>
         <MinMessege>
           <strong>Retina 머그</strong><br/>
@@ -185,6 +278,10 @@ const Container = styled.div`
 `;
 
 const GlobalNav = styled.nav`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
   height: 44px;
   padding: 0 0.5rem;
 
@@ -202,6 +299,10 @@ const GlobalNavLink = styled.div`
 const GlobalNavItem = styled.a``;
 
 const LocalNav = styled.nav`
+  position: fixed;
+  top: 45px;
+  left: 0;
+  width: 100%;
   height: 52px;
   padding: 0 1rem;
   border-bottom: 1px solid #ddd;
@@ -223,6 +324,7 @@ const LocalNavLinksA = styled.a`
 `;
 
 const ScrollSection = styled.section`
+  border-top: 3px solid red;
   padding-top: 50vh;
 `;
 
@@ -235,10 +337,20 @@ const ScrollSectionH1 = styled.h1`
   }
 `;
 
-const StyickyElem = styled.div``;
+// 섹션2
+// position: fixed(처음부터 고정이죠) ; sticky (일정 구간에 도달하면 해당 부분에 멈춰있습니다.)
+// position: fixed를 하겠다는 것은 jS제어 하겠다는 것입니다. 
+// sticky는 많은 곳에서 사용하지 않고 있기에, 개발 방식이 복잡하더라도 fixed로 도전해보겠습니다. 
+const StyickyElem = styled.div`
+  display: none;
+  position: fixed;
+  top: 0;
+  left:0;
+  width: 100%;
+`;
 
 const MainMsg = styled(StyickyElem)`
-  display: flex;
+  /* display: flex; */
   align-items: center;
   justify-content: center;
   height: 3em;
@@ -350,3 +462,23 @@ const Footer = styled.footer`
   height: 7rem;
 `;
 
+
+/*
+  현재 섹션이 4개입니다. 
+  Timeline(scoll)에 따라 화면이 진행됩니다. 
+  1) 컵과 텍스트 애니메이션 4개 
+  2) 그냥 스크롤 1
+  3) 컵과 설명
+  4) 이미지가 크게 나오고 스크롤되면서 다른 이미지로 블랜딩되는 것 
+
+  구간별로 정보를 설정하고 애니메이션은 실행하는 것이죠. 
+  예를 들어 
+  1) 0 ~ 3000px 의 비율이 있을 겁니다. 50% 과 같이 말이에요. 
+  2)  애니메이션은 우리 눈에만 보이면 됩니다. 
+      이를 위해서 미리 정해놓은 스크롤값에 대해서만 애니메이션 처리를 해야 합니다. 
+  3) 비디오의 재생 프레임 수 등을 가지고 제어해야 합니다. 
+  4) 이 정보들을 어떤 배열(arr)에 담아 놓고 제어할 것입니다. >> 핵심은 스크롤에 따른 장면을 나누고, 그 장면에 대한 애니메이션을 처리할 것입니다. 
+
+
+
+*/
