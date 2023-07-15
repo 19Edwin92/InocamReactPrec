@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 
 const DraggableContainer = () => {
@@ -62,6 +62,47 @@ const DraggableContainer = () => {
     { id: 'draggable-2', text: 'Draggable 2' }
   ]);
   const [droppedItems, setDroppedItems] = useState([]);
+
+
+  // const draganddropRef = useRef(null)
+
+  // const onDrop = (e) => {
+  //   e.preventDefault()
+  //   const files = [...e.dataTransfer?.files]
+  //   console.log(files);
+  // } 
+  // useEffect(()=>{
+  //   const fileDrop = draganddropRef.current
+
+    
+  //   fileDrop.addEventListener('drop', onDrop) 
+
+
+  // }, [])
+    const [dragging, setDragging] = useState(false);
+  
+    const handleDragEnter = (e) => {
+      e.preventDefault();
+      setDragging(true);
+    };
+  
+    const handleDragLeave = () => {
+      setDragging(false);
+    };
+  
+    const handleDragOver2 = (e) => {
+      e.preventDefault();
+    };
+  
+    const handleDrop2 = (e) => {
+      e.preventDefault();
+      setDragging(false);
+  
+      const file = e.dataTransfer.files[0];
+      // Process the file as needed (e.g., upload to server, display preview, etc.)
+      console.log("Dropped file:", file);
+    };
+  
 
   return (
     <>
@@ -159,7 +200,24 @@ const DraggableContainer = () => {
         ))}
         </DropZone>
       </Container2>
+
+      
     </div>
+    <h2>드로그앤 드랍</h2>
+    <div
+      className={`dropzone ${dragging ? "dragging" : ""}`}
+      onDragEnter={handleDragEnter}
+      onDragLeave={handleDragLeave}
+      onDragOver={handleDragOver2}
+      onDrop={handleDrop2}
+    >
+      {dragging ? "Drop the file here" : "Drag and drop a file here"}
+    </div>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
     </>
   );
 };
