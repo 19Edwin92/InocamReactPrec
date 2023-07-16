@@ -33,17 +33,28 @@ function Interactive() {
       objs : {
         contaniner : scrollSection1,
         Section1Msg1: scrollSection1Msg1,
-        // scrollSection1Msg2,
-        // scrollSection1Msg3,
-        // scrollSection1Msg4,
+        Section1Msg2 : scrollSection1Msg2,
+        Section1Msg3 : scrollSection1Msg3,
+        Section1Msg4 : scrollSection1Msg4,
       },
       values : {
         selectionMsgA_opacity : [0 ,1, {start: 0.1, end:0.2}], // const calcValues 에서 계산하기 위해서 // 최고값이 700이 되도록 // [200, 900] 예제를 바르게 [0, 1]로 고쳐봅시다. 
-        selectionMsgB_opacity : [0 ,1, {start: 0.3, end:0.4}], // 메시지가 등장할 타이밍을 정해줍니다. 
-        selectionMsgC_opacity : [0 ,1, {start: 0.5, end:0.6}],
-        selectionMsgD_opacity : [0 ,1, {start: 0.6, end:0.8}],
-
         selectionMsgA_opacity_out : [1 ,0, {start: 0.25, end:0.3}],
+        selectionMsgB_opacity : [0 ,1, {start: 0.3, end:0.4}], // 메시지가 등장할 타이밍을 정해줍니다. 
+        selectionMsgB_opacity_out : [1 ,0, {start: 0.45, end:0.5}],
+        selectionMsgC_opacity : [0 ,1, {start: 0.5, end:0.6}],
+        selectionMsgC_opacity_out : [0 ,1, {start: 0.65, end:0.7}],
+        selectionMsgD_opacity : [0 ,1, {start: 0.7, end:0.8}],
+        selectionMsgD_opacity_out : [0 ,1, {start: 0.85, end:0.9}],
+
+        selectionMsgA_translateY : [20 ,0, {start: 0.1, end:0.2}],
+        selectionMsgA_translateY_out : [0, -20, {start: 0.25, end:0.3}],
+        selectionMsgB_translateY : [20 ,0, {start: 0.3, end:0.4}],
+        selectionMsgB_translateY_out : [0, -20, {start: 0.45, end:0.5}],
+        selectionMsgC_translateY : [20 ,0, {start: 0.5, end:0.6}],
+        selectionMsgC_translateY_out : [0, -20, {start: 0.65, end:0.7}],
+        selectionMsgD_translateY : [20 ,0, {start: 0.7, end:0.8}],
+        selectionMsgD_translateY_out : [0, -20, {start: 0.85, end:0.9}],
       } 
     },
     {
@@ -96,6 +107,7 @@ function Interactive() {
   }
 
   const calcValues = (value, currenYoffset) => {
+    console.log("calcValues-value", value);
     let rv
     // 섹션의 각 메시지에 대한 애니메이션을 지정할 부분입니다. 
     const scrollHeight = screnInfo[currentScene].scrollHeight
@@ -132,12 +144,52 @@ function Interactive() {
       case 0 :
         let selectionMsgA_opacity = calcValues(values.selectionMsgA_opacity, currentYoffset)
         let selectionMsgA_opacity_out = calcValues(values.selectionMsgA_opacity_out, currentYoffset)
+        let selectionMsgA_translateY = calcValues(values.selectionMsgA_translateY, currentYoffset)
+        let selectionMsgA_translateY_out = calcValues(values.selectionMsgA_translateY_out, currentYoffset)
+
+        let selectionMsgB_opacity = calcValues(values.selectionMsgB_opacity, currentYoffset)
+        let selectionMsgB_opacity_out = calcValues(values.selectionMsgB_opacity_out, currentYoffset)
+        let selectionMsgB_translateY = calcValues(values.selectionMsgB_translateY, currentYoffset)
+        let selectionMsgB_translateY_out = calcValues(values.selectionMsgB_translateY_out, currentYoffset)
+
+        let selectionMsgC_opacity = calcValues(values.selectionMsgC_opacity, currentYoffset)
+        let selectionMsgC_opacity_out = calcValues(values.selectionMsgC_opacity_out, currentYoffset)
+        let selectionMsgC_translateY = calcValues(values.selectionMsgC_translateY, currentYoffset)
+        let selectionMsgC_translateY_out = calcValues(values.selectionMsgC_translateY_out, currentYoffset)
+
+        let selectionMsgD_opacity = calcValues(values.selectionMsgD_opacity, currentYoffset)
+        let selectionMsgD_opacity_out = calcValues(values.selectionMsgD_opacity_out, currentYoffset)
+        let selectionMsgD_translateY = calcValues(values.selectionMsgD_translateY, currentYoffset)
+        let selectionMsgD_translateY_out = calcValues(values.selectionMsgD_translateY_out, currentYoffset)
+        
         if (scrollRatio <= 0.22) {
           obj.Section1Msg1.current.style.opacity = selectionMsgA_opacity
-        } else {
+          obj.Section1Msg1.current.style.transform = `translateY(${selectionMsgA_translateY}%)`
+
+        } else if (scrollRatio <= 0.3) {
           obj.Section1Msg1.current.style.opacity = selectionMsgA_opacity_out
+          obj.Section1Msg1.current.style.transform = `translateY(${selectionMsgA_translateY_out}%)`
+        } else if (scrollRatio <= 0.42) {
+          obj.Section1Msg2.current.style.opacity = selectionMsgB_opacity
+          obj.Section1Msg2.current.style.transform = `translateY(${selectionMsgB_translateY}%)`
+        } else if (scrollRatio <= 0.5) {
+          obj.Section1Msg2.current.style.opacity = selectionMsgB_opacity_out
+          obj.Section1Msg2.current.style.transform = `translateY(${selectionMsgB_translateY_out}%)`
+        } else if (scrollRatio <= 0.62) {
+          obj.Section1Msg3.current.style.opacity = selectionMsgC_opacity
+          obj.Section1Msg3.current.style.transform = `translateY(${selectionMsgC_translateY}%)`
+        } else if (scrollRatio <= 0.7) {
+          obj.Section1Msg3.current.style.opacity = selectionMsgC_opacity_out
+          obj.Section1Msg3.current.style.transform = `translateY(${selectionMsgC_translateY_out}%)`
+        } else if (scrollRatio <= 0.82) {
+          obj.Section1Msg4.current.style.opacity = selectionMsgD_opacity
+          obj.Section1Msg4.current.style.transform = `translateY(${selectionMsgD_translateY}%)`
+        } else  {
+          obj.Section1Msg4.current.style.opacity = selectionMsgD_opacity_out
+          obj.Section1Msg4.current.style.transform = `translateY(${selectionMsgD_translateY_out}%)`
         }
-        console.log(calcValues(values.selectionMsgA_opacity, currentYoffset))
+        console.log("opacity", calcValues(values.selectionMsgA_opacity, currentYoffset))
+        console.log("stranslateY", calcValues(selectionMsgA_translateY, currentYoffset));
         break;
       case 1 :
         // console.log('playAnimation 1 play');
@@ -237,7 +289,7 @@ function Interactive() {
         </MainMsg>
         <MainMsg $state={count === 0} ref={scrollSection1Msg2}>
           <p>
-            주변 맛으 느끼게 해주는
+            주변 맛을 느끼게 해주는
             <br />
             주변 맛 허용 모드
           </p>
@@ -402,6 +454,7 @@ const GlobalNavLink = styled.div`
   justify-content: space-between;
   align-items: center;
   height: 100%;
+  
 `;
 
 const GlobalNavItem = styled.a``;
