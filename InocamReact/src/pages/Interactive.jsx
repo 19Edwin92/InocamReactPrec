@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { css, styled } from "styled-components";
+import { styled } from "styled-components";
 
 
 
@@ -8,13 +8,19 @@ function Interactive() {
   const scrollSection2 = useRef(null);
   const scrollSection3 = useRef(null);
   const scrollSection4 = useRef(null);
+
+  const scrollSection1Msg1 = useRef(null);
+  const scrollSection1Msg2 = useRef(null);
+  const scrollSection1Msg3 = useRef(null);
+  const scrollSection1Msg4 = useRef(null);
+
   const [count, setCount] = useState(0)
 
   // 변수 모음공간
   let yoffset = 0 // window.pageYOffset 대신 사용할 변수
   let preScrollHeigth = 0 // 상위에 있는 섹션들의 스크롤의 합
   let currentScene = 0 // 현재 뷰포트에 등장한 section
-
+  let enterNewScene = false; // 새로운 씬에 진입하는 순간 true
   
 
   /* 섹션2 : 스크롤을 담은객체를 생성합니다. */ 
@@ -25,7 +31,19 @@ function Interactive() {
       heightNum: 5, // 브라우저 높이의 5배로 scrollHeight를 세팅, 페이지를 연 디바이스 별로 대응하기 위함입니다. 
       scrollHeight : 0,
       objs : {
-        contaniner : scrollSection1
+        contaniner : scrollSection1,
+        Section1Msg1: scrollSection1Msg1,
+        // scrollSection1Msg2,
+        // scrollSection1Msg3,
+        // scrollSection1Msg4,
+      },
+      values : {
+        selectionMsgA_opacity : [0 ,1, {start: 0.1, end:0.2}], // const calcValues 에서 계산하기 위해서 // 최고값이 700이 되도록 // [200, 900] 예제를 바르게 [0, 1]로 고쳐봅시다. 
+        selectionMsgB_opacity : [0 ,1, {start: 0.3, end:0.4}], // 메시지가 등장할 타이밍을 정해줍니다. 
+        selectionMsgC_opacity : [0 ,1, {start: 0.5, end:0.6}],
+        selectionMsgD_opacity : [0 ,1, {start: 0.6, end:0.8}],
+
+        selectionMsgA_opacity_out : [1 ,0, {start: 0.25, end:0.3}],
       } 
     },
     {
@@ -43,7 +61,7 @@ function Interactive() {
       heightNum: 5, 
       scrollHeight : 0, 
       objs : {
-        contaniner : scrollSection3
+        contaniner : scrollSection3,
       }
     },
     {
@@ -61,7 +79,8 @@ function Interactive() {
     // 각 스크롤섹션의 높이 설절
     for (let i =0; i< screnInfo.length; i++) {
       screnInfo[i].scrollHeight = screnInfo[i].heightNum * window.innerHeight;
-      screnInfo[i].objs.contaniner.current.style.height = `${screnInfo[i].scrollHeight}px`
+      // console.log("screnInfo[i].scrollHeight", screnInfo[i].scrollHeight);
+      screnInfo[i].objs.contaniner.current.style.height = `${screnInfo[i].scrollHeight}px` // 마진과 페딩값에 의해서 가변될 수 있다. 
     }
 
     // 새로고침시 대응하도록
@@ -76,25 +95,99 @@ function Interactive() {
     setCount(currentScene);
   }
 
+  const calcValues = (value, currenYoffset) => {
+    let rv
+    // 섹션의 각 메시지에 대한 애니메이션을 지정할 부분입니다. 
+    const scrollHeight = screnInfo[currentScene].scrollHeight
+    let scrollRatio = currenYoffset/ scrollHeight; // 현재 섹션 대비, 스크롤된 곳 
+    if (value.length === 3) {
+      // start ~ ens 사이에 실행
+      const partScrollStart = value[2].start * scrollHeight;
+      const partScrollEnd = value[2].end * scrollHeight;
+      const partScrollHeight = partScrollEnd - partScrollStart; 
+      if(currenYoffset >= partScrollStart && currenYoffset <= partScrollEnd) {
+        rv = (currenYoffset - partScrollStart) / partScrollHeight * (value[1] - value[0]) + value[0] 
+      } else if (currenYoffset < partScrollStart) {
+        rv = value[0]
+      } else if ( currenYoffset > partScrollEnd ) {
+        rv = value[1]
+      } 
+    } else {
+      rv = scrollRatio * (value[1] - value[0]) + value[0] // 0~700 사이가 나올 겁니다. // 그런데 초기값을 위해서  + value[0] 를 통해서 다시 더해줄 수 있습니다. 
+    }
+    
+    // 현재신의 처음부터 끝까지를 분기처리 해주겠습니다. 
+    return rv
+  }
+
+  const playAnimation = () => {
+    // 스크롤될 때, 
+    const values = screnInfo[currentScene].values
+    const obj = screnInfo[currentScene].objs
+    const currentYoffset = yoffset - preScrollHeigth; // 각 섹션의 현재 위치 값 구하기 
+    const scrollHeight = screnInfo[currentScene].scrollHeight
+    const scrollRatio = (yoffset - preScrollHeigth) / scrollHeight // yoffset / scrollHeight
+    console.log(`currentScene ${currentScene}, ${currentYoffset}px` );
+    switch (currentScene) {
+      case 0 :
+        let selectionMsgA_opacity = calcValues(values.selectionMsgA_opacity, currentYoffset)
+        let selectionMsgA_opacity_out = calcValues(values.selectionMsgA_opacity_out, currentYoffset)
+        if (scrollRatio <= 0.22) {
+          obj.Section1Msg1.current.style.opacity = selectionMsgA_opacity
+        } else {
+          obj.Section1Msg1.current.style.opacity = selectionMsgA_opacity_out
+        }
+        console.log(calcValues(values.selectionMsgA_opacity, currentYoffset))
+        break;
+      case 1 :
+        // console.log('playAnimation 1 play');
+        break;
+      case 2 :
+        // console.log('playAnimation 2 play');
+        break;
+      case 3 :
+        // console.log('playAnimation 3 play');
+        break;
+      default :
+    }
+
+  }
 
   const scrollLoop = () => {
+    // console.log("yoffset", yoffset, `\n`, `\n`, `  windoeInnerHeight : ${window.innerHeight * 5}`,`screnInfo[i].scrollHeight ${screnInfo[currentScene].scrollHeight}`, `\n`, `  currentScene : ${currentScene}` );
+    // console.log("scrollSection2 섹션의 내부 높이", scrollSection2.current.offsetHeight, "상단으로부터의 높이", scrollSection2.current.offsetTop);
+    // console.log("scrollSection3 섹션의 내부 높이", scrollSection3.current.offsetHeight, "상단으로부터의 높이", scrollSection3.current.offsetTop);
+    // console.log("scrollSection4 섹션의 내부 높이", scrollSection4.current.offsetHeight, "상단으로부터의 높이", scrollSection4.current.offsetTop);
     // console.log(window.pageYOffset);  // 화면에 스크롤 위치가 표시됩니다. 
     // 몇번째 section이냐? 
+
+
+
+    enterNewScene = false
       preScrollHeigth = 0
       for (let i = 0; i < currentScene; i++) {
       preScrollHeigth += screnInfo[i].scrollHeight;
     }
-    if(currentScene < 4 && yoffset > preScrollHeigth + screnInfo[currentScene].scrollHeight + (462.8 * (currentScene+1)) ) {
+    // if(currentScene < 4 && yoffset > preScrollHeigth + screnInfo[currentScene].scrollHeight + (462.8 * (currentScene+1)) ) {
+    // 실제는 3980 이지만, 마진을 포함한 다양한 속성들 때문에 내용이 추가되어 4391로 각 preScrollHeigth의 높이가 증가된 것을 볼 수 있다. 
+    // 이는 강의를 따라 했지만, 전역에 설정한  box-sizing: border-box; 가 적용되지 않았던 문제 때문이다. 
+    if(currentScene < 4 && yoffset > preScrollHeigth + screnInfo[currentScene].scrollHeight) {  
+      enterNewScene = true
       currentScene++
      }
-    if (currentScene > 0 && yoffset < preScrollHeigth+(471 * (currentScene))) {
+    // if (currentScene > 0 && yoffset < preScrollHeigth+(471 * (currentScene))) {
+    if (currentScene > 0 && yoffset < preScrollHeigth) {  
+      enterNewScene = true
       currentScene--
     }
+    if (enterNewScene) return // 신이 변경될 때의 찰나를 제어할 수 있습니다. 
+
+    playAnimation()
   }
 
   useEffect(()=> {
     setLayout()
-   
+
     window.addEventListener('scroll', ()=> {
       // 스크롤은 복잡하기에, 여러 함수들이 기록될 것입니다.
       yoffset = window.scrollY  // pageYOffset 현재 사용되지 않음
@@ -135,28 +228,28 @@ function Interactive() {
 {/* 인터렉션 부분 scrollSection1 */}
       <ScrollSection ref={scrollSection1} >
         <ScrollSectionH1>AirMug Pro</ScrollSectionH1>
-        <MainMsg $state={count === 0 && true}>
+        <MainMsg $state={count === 0} ref={scrollSection1Msg1}>
           <p>
             온전히 빠져들게 하는
             <br />
             최고급 세라믹
           </p>
         </MainMsg>
-        <MainMsg $state={count === 0 && true}>
+        <MainMsg $state={count === 0} ref={scrollSection1Msg2}>
           <p>
             주변 맛으 느끼게 해주는
             <br />
             주변 맛 허용 모드
           </p>
         </MainMsg>
-        <MainMsg $state={count === 0 && true}>
+        <MainMsg $state={count === 0} ref={scrollSection1Msg3}>
           <p>
             온종일 편안한
             <br />
             맞춤형 손잡이
           </p>
         </MainMsg>
-        <MainMsg $state={count === 0 && true}>
+        <MainMsg $state={count === 0} ref={scrollSection1Msg4}>
           <p>
             새롭게 입가를
             <br />
@@ -198,13 +291,13 @@ function Interactive() {
 
 {/* 인터렉션 부분 scrollSection3 */}
       <ScrollSection ref={scrollSection3}>
-        <MainMsg $state={count === 2 && true}>
+        <MainMsg $state={count === 2}>
           <Desc2>
             <small>편안한 촉감</small>
             입과 하나 되다.
           </Desc2>
         </MainMsg>
-        <DescMsg $state={count === 2 && true}>
+        <DescMsg $state={count === 2}>
           <p>
             편안한 목넘김을 완성하는 디테일한 여러 구성를, 우리는 이를 하나하나
             새롭게 살피고 재구성하는 과정을 거쳐 새로운 수준의 머그, AirMug
@@ -372,6 +465,8 @@ const MainMsg = styled(StyickyElem)`
   height: 3em;
   font-size: 2.3rem;
   margin: 10px;
+  opacity: 0;
+  top:35vh;
 
   p {
     line-height: 1.2;

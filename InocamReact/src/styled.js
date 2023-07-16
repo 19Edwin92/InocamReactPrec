@@ -1,7 +1,7 @@
 import styled, { createGlobalStyle, css } from "styled-components";
 
 export const GlobalStyle = createGlobalStyle`
-  div {
+  * {
     box-sizing: border-box;
   }
 `
@@ -23,7 +23,7 @@ const StyledHeader = styled.div`
 `;
 
 const Form = styled.form`
-  box-sizing: content-box;
+  box-sizing: border-box;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 10px;
@@ -35,21 +35,21 @@ const Form = styled.form`
 `;
 
 const Layout = styled.div`
-  box-sizing: content-box;
+  box-sizing:border-box;
   min-width: 800px;
   width: 1200px;
   margin: 0 auto;
 `;
 
 const TodoBoxLayout = styled.div`
-  box-sizing: content-box;
+  box-sizing: border-box;
   display: flex;
   flex-wrap: wrap;
   gap: 3rem;
 `;
 
 const TodoBox = styled.div`
-  box-sizing: content-box;
+  box-sizing: border-box;
   padding: 0 1rem;
   width: 300px;
   height: 200px;
