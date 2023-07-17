@@ -89,9 +89,13 @@ function Interactive() {
   const setLayout = () => {
     // 각 스크롤섹션의 높이 설절
     for (let i =0; i< screnInfo.length; i++) {
-      screnInfo[i].scrollHeight = screnInfo[i].heightNum * window.innerHeight;
-      // console.log("screnInfo[i].scrollHeight", screnInfo[i].scrollHeight);
-      screnInfo[i].objs.contaniner.current.style.height = `${screnInfo[i].scrollHeight}px` // 마진과 페딩값에 의해서 가변될 수 있다. 
+      if (screnInfo[i].type === "sticky") {
+        screnInfo[i].scrollHeight = screnInfo[i].heightNum * window.innerHeight;
+        screnInfo[i].objs.contaniner.current.style.height = `${screnInfo[i].scrollHeight}px` // 마진과 페딩값에 의해서 가변될 수 있다. 
+      } else {
+        screnInfo[i].scrollHeight = screnInfo[i].objs.contaniner.offsetHeight;
+      }
+      // screnInfo[i].objs.contaniner.style
     }
 
     // 새로고침시 대응하도록
