@@ -14,6 +14,10 @@ function Interactive() {
   const scrollSection1Msg3 = useRef(null);
   const scrollSection1Msg4 = useRef(null);
 
+  const scrollSection1Msg5 = useRef(null);
+  const scrollSection1Msg6 = useRef(null);
+  const scrollSection1Msg7 = useRef(null);
+
   const [count, setCount] = useState(0)
 
   // 변수 모음공간
@@ -27,7 +31,7 @@ function Interactive() {
   const screnInfo = [
     {
       //scrollSection1
-      type:"styicky",
+      type:"sticky",
       heightNum: 5, // 브라우저 높이의 5배로 scrollHeight를 세팅, 페이지를 연 디바이스 별로 대응하기 위함입니다. 
       scrollHeight : 0,
       objs : {
@@ -43,9 +47,9 @@ function Interactive() {
         selectionMsgB_opacity : [0 ,1, {start: 0.3, end:0.4}], // 메시지가 등장할 타이밍을 정해줍니다. 
         selectionMsgB_opacity_out : [1 ,0, {start: 0.45, end:0.5}],
         selectionMsgC_opacity : [0 ,1, {start: 0.5, end:0.6}],
-        selectionMsgC_opacity_out : [0 ,1, {start: 0.65, end:0.7}],
+        selectionMsgC_opacity_out : [1 ,0, {start: 0.65, end:0.7}],
         selectionMsgD_opacity : [0 ,1, {start: 0.7, end:0.8}],
-        selectionMsgD_opacity_out : [0 ,1, {start: 0.85, end:0.9}],
+        selectionMsgD_opacity_out : [1 ,0, {start: 0.85, end:0.9}],
 
         selectionMsgA_translateY : [20 ,0, {start: 0.1, end:0.2}],
         selectionMsgA_translateY_out : [0, -20, {start: 0.25, end:0.3}],
@@ -59,7 +63,7 @@ function Interactive() {
     },
     {
       //scrollSection2
-      type:"nomarl",
+      type:"normal",
       heightNum: 5, 
       scrollHeight : 0,
       objs : {
@@ -68,16 +72,33 @@ function Interactive() {
     },
     {
       //scrollSection3
-      type:"styicky",
+      type:"sticky",
       heightNum: 5, 
       scrollHeight : 0, 
       objs : {
         contaniner : scrollSection3,
+        Section1Msg5 : scrollSection1Msg5,
+        Section1Msg6 : scrollSection1Msg6,
+        Section1Msg7 : scrollSection1Msg7,
+      },
+      values : {
+        selectionMsgA_opacity : [0 ,1, {start: 0.1, end:0.2}], 
+        selectionMsgA_opacity_out : [1 ,0, {start: 0.25, end:0.3}],
+        selectionMsgA_translateY : [20 ,0, {start: 0.1, end:0.2}],
+        selectionMsgA_translateY_out : [0, -20, {start: 0.25, end:0.3}],
+
+        pinB_scaleY: [0.5, 1, {start:0.5, end: 0.55}], 
+        pinB_opacity : [0,1, {start:0.5, end:0.55}],
+        pinB_opacity_out : [1,0, {start:0.58, end:0.63}],
+
+        pinC_scaleY: [0.5, 1, {start:0.72, end: 0.77}],
+        pinC_opacity : [0,1, {start:0.72, end:0.77}],
+        pinC_opacity_out : [1,0, {start:0.85, end:0.9}],
       }
     },
     {
       //scrollSection4
-      type:"nomarl",
+      type:"normal",
       heightNum: 5, 
       scrollHeight : 0, 
       objs : {
@@ -89,14 +110,18 @@ function Interactive() {
   const setLayout = () => {
     // 각 스크롤섹션의 높이 설절
     for (let i =0; i< screnInfo.length; i++) {
-      if (screnInfo[i].type === "sticky") {
+      if(screnInfo[i].type === 'sticky') {
         screnInfo[i].scrollHeight = screnInfo[i].heightNum * window.innerHeight;
-        screnInfo[i].objs.contaniner.current.style.height = `${screnInfo[i].scrollHeight}px` // 마진과 페딩값에 의해서 가변될 수 있다. 
-      } else {
-        screnInfo[i].scrollHeight = screnInfo[i].objs.contaniner.offsetHeight;
+      } else if (screnInfo[i].type === 'normal') {
+        // console.log(screnInfo[i].objs.contaniner)
+        screnInfo[i].scrollHeight = screnInfo[i].objs.contaniner.current.offsetHeight
       }
-      // screnInfo[i].objs.contaniner.style
+      screnInfo[i].objs.contaniner.current.style.height = `${screnInfo[i].scrollHeight}px` // 마진과 페딩값에 의해서 가변될 수 있다. 
     }
+
+    // screnInfo[i].scrollHeight = screnInfo[i].heightNum * window.innerHeight;
+    // screnInfo[i].objs.contaniner.current.style.height = `${screnInfo[i].scrollHeight}px` // 마진과 페딩값에 의해서 가변될 수 있다. 
+
 
     // 새로고침시 대응하도록
     let totalScrollHeight = 0
@@ -111,7 +136,7 @@ function Interactive() {
   }
 
   const calcValues = (value, currenYoffset) => {
-    console.log("calcValues-value", value);
+    // console.log("calcValues-value", value);
     let rv
     // 섹션의 각 메시지에 대한 애니메이션을 지정할 부분입니다. 
     const scrollHeight = screnInfo[currentScene].scrollHeight
@@ -127,6 +152,7 @@ function Interactive() {
         rv = value[0]
       } else if ( currenYoffset > partScrollEnd ) {
         rv = value[1]
+        // console.log("selectionMsg_opacity", value[1]);
       } 
     } else {
       rv = scrollRatio * (value[1] - value[0]) + value[0] // 0~700 사이가 나올 겁니다. // 그런데 초기값을 위해서  + value[0] 를 통해서 다시 더해줄 수 있습니다. 
@@ -142,14 +168,15 @@ function Interactive() {
     const obj = screnInfo[currentScene].objs
     const currentYoffset = yoffset - preScrollHeigth; // 각 섹션의 현재 위치 값 구하기 
     const scrollHeight = screnInfo[currentScene].scrollHeight
-    const scrollRatio = (yoffset - preScrollHeigth) / scrollHeight // yoffset / scrollHeight
+    const scrollRatio = currentYoffset / scrollHeight // yoffset / scrollHeight
     console.log(`currentScene ${currentScene}, ${currentYoffset}px` );
+    // console.log(`yoffset ${yoffset}, "preScrollHeigth", ${preScrollHeigth}px \n screnInfo[currentScene].scrollHeight : ${scrollHeight}` );
     switch (currentScene) {
       case 0 :
-        let selectionMsgA_opacity = calcValues(values.selectionMsgA_opacity, currentYoffset)
-        let selectionMsgA_opacity_out = calcValues(values.selectionMsgA_opacity_out, currentYoffset)
-        let selectionMsgA_translateY = calcValues(values.selectionMsgA_translateY, currentYoffset)
-        let selectionMsgA_translateY_out = calcValues(values.selectionMsgA_translateY_out, currentYoffset)
+        // let selectionMsgA_opacity = calcValues(values.selectionMsgA_opacity, currentYoffset)
+        // let selectionMsgA_opacity_out = calcValues(values.selectionMsgA_opacity_out, currentYoffset)
+        // let selectionMsgA_translateY = calcValues(values.selectionMsgA_translateY, currentYoffset)
+        // let selectionMsgA_translateY_out = calcValues(values.selectionMsgA_translateY_out, currentYoffset)
 
         let selectionMsgB_opacity = calcValues(values.selectionMsgB_opacity, currentYoffset)
         let selectionMsgB_opacity_out = calcValues(values.selectionMsgB_opacity_out, currentYoffset)
@@ -167,12 +194,11 @@ function Interactive() {
         let selectionMsgD_translateY_out = calcValues(values.selectionMsgD_translateY_out, currentYoffset)
         
         if (scrollRatio <= 0.22) {
-          obj.Section1Msg1.current.style.opacity = selectionMsgA_opacity
-          obj.Section1Msg1.current.style.transform = `translateY(${selectionMsgA_translateY}%)`
-
+          obj.Section1Msg1.current.style.opacity = calcValues(values.selectionMsgA_opacity, currentYoffset)
+          obj.Section1Msg1.current.style.transform = `translateY(${calcValues(values.selectionMsgA_translateY, currentYoffset)}%)`
         } else if (scrollRatio <= 0.3) {
-          obj.Section1Msg1.current.style.opacity = selectionMsgA_opacity_out
-          obj.Section1Msg1.current.style.transform = `translateY(${selectionMsgA_translateY_out}%)`
+          obj.Section1Msg1.current.style.opacity = calcValues(values.selectionMsgA_opacity_out, currentYoffset)
+          obj.Section1Msg1.current.style.transform = `translateY(${ calcValues(values.selectionMsgA_translateY_out, currentYoffset)}%)`
         } else if (scrollRatio <= 0.42) {
           obj.Section1Msg2.current.style.opacity = selectionMsgB_opacity
           obj.Section1Msg2.current.style.transform = `translateY(${selectionMsgB_translateY}%)`
@@ -192,13 +218,32 @@ function Interactive() {
           obj.Section1Msg4.current.style.opacity = selectionMsgD_opacity_out
           obj.Section1Msg4.current.style.transform = `translateY(${selectionMsgD_translateY_out}%)`
         }
-        console.log("opacity", calcValues(values.selectionMsgA_opacity, currentYoffset))
-        console.log("stranslateY", calcValues(selectionMsgA_translateY, currentYoffset));
+        // console.log("opacity", calcValues(values.selectionMsgA_opacity, currentYoffset))
+        // console.log("stranslateY", calcValues(selectionMsgA_translateY, currentYoffset));
         break;
       case 1 :
         // console.log('playAnimation 1 play');
         break;
       case 2 :
+        console.log(values)
+        if (scrollRatio <= 0.22) {
+          obj.Section1Msg5.current.style.opacity = calcValues(values.selectionMsgA_opacity, currentYoffset)
+          obj.Section1Msg5.current.style.transform = `translateY(${calcValues(values.selectionMsgA_translateY, currentYoffset)}%)`
+        } else if (scrollRatio <= 0.3) {
+          obj.Section1Msg5.current.style.opacity = calcValues(values.selectionMsgA_opacity_out, currentYoffset)
+          obj.Section1Msg5.current.style.transform = `translateY(${ calcValues(values.selectionMsgA_translateY_out, currentYoffset)}%)`
+        } else if (scrollRatio <= 0.56) {
+          obj.Section1Msg6.current.style.opacity = calcValues(values.pinB_opacity, currentYoffset)
+          obj.Section1Msg6.current.style.transform = `scaleY(${calcValues(values.pinB_scaleY, currentYoffset)})`
+        } else if (scrollRatio <= 0.7) {
+          obj.Section1Msg6.current.style.opacity = calcValues(values.pinB_opacity_out, currentYoffset)
+        } else if (scrollRatio <= 0.8) {
+          obj.Section1Msg7.current.style.opacity = calcValues(values.pinC_opacity, currentYoffset)
+          obj.Section1Msg7.current.style.transform = `scaleY(${calcValues(values.pinC_scaleY, currentYoffset)})`
+        } else {
+          obj.Section1Msg7.current.style.opacity = calcValues(values.pinC_opacity_out, currentYoffset)
+        }
+
         // console.log('playAnimation 2 play');
         break;
       case 3 :
@@ -347,13 +392,13 @@ function Interactive() {
 
 {/* 인터렉션 부분 scrollSection3 */}
       <ScrollSection ref={scrollSection3}>
-        <MainMsg $state={count === 2}>
+        <MainMsg ref={scrollSection1Msg5} $state={count === 2}>
           <Desc2>
             <small>편안한 촉감</small>
             입과 하나 되다.
           </Desc2>
         </MainMsg>
-        <DescMsg $state={count === 2}>
+        <DescMsg ref={scrollSection1Msg6} $state={count === 2}>
           <p>
             편안한 목넘김을 완성하는 디테일한 여러 구성를, 우리는 이를 하나하나
             새롭게 살피고 재구성하는 과정을 거쳐 새로운 수준의 머그, AirMug
@@ -362,12 +407,12 @@ function Interactive() {
           </p>
           <Pin />
         </DescMsg>
-        <StyickyElem>
+        <DescMsg2 ref={scrollSection1Msg7} $state={count === 2}>
           <p>
             디자인 앤 퀼리티 오브 스웨덴, <br /> 메이드 인 차이나
           </p>
           <Pin />
-        </StyickyElem>
+        </DescMsg2>
       </ScrollSection>
 
 {/* 인터렉션 부분 scrollSection4 */}
@@ -540,11 +585,24 @@ const DescMsg = styled(StyickyElem)`
   display: ${({$state}) => $state ? "block" : "none"};
   font-weight: bold;
   width: 50%;
+  top:10%;
+  left: 40%;
 
   @media (min-width: 1024px) {
     width: 20%;
+    top:20%;
+    left:53%;
 }
 `;
+
+const DescMsg2 = styled(DescMsg)`
+  top:15%;
+  left:45%;
+  @media (min-width: 1024px) {
+    left:55%
+  }
+
+`
 
 const Pin = styled.div`
   width: 1px;
