@@ -4,6 +4,7 @@ import { createApi } from '@reduxjs/toolkit/query/react'
 const axiosBaseQuery = () => async ({url, method, data}) => {
   try {
     const res = await instance({method,url,data})
+    console.log(`${method}`, res);
     return {data: res.data}
   } catch (error) {
     return console.log("에러", error);
@@ -14,8 +15,12 @@ export const todoRTKquery = createApi({
   baseQuery: axiosBaseQuery(),
   tagTypes: ['TODO'],
   endpoints : builder => ({
+    // getTodoRTK : builder.query({
+    //   query: () => ({url:"/todos", method:"get"}),
+    //   providesTags: ['TODO'],
+    // }),
     getTodoRTK : builder.query({
-      query: () => ({url:"/todos", method:"get"}),
+      query: () => ({url:"/api/posts", method:"get"}),
       providesTags: ['TODO'],
     }),
     setTodoRTK : builder.mutation({
@@ -33,6 +38,7 @@ export const todoRTKquery = createApi({
   })
 })
 
+// export const {useGetTodoRTKQuery, useSetTodoRTKMutation, useDeleteTodoRTKMutation, useUpdateTodoRTKMutation} = todoRTKquery;
 export const {useGetTodoRTKQuery, useSetTodoRTKMutation, useDeleteTodoRTKMutation, useUpdateTodoRTKMutation} = todoRTKquery;
 
 

@@ -13,10 +13,11 @@ function App() {
     useThunk();
 
   const query = useGetTodoRTKQuery()
+  
 
   useEffect(() => {
     dispatch(__getTodosThunk());
-  }, [dispatch, query]);
+  }, [dispatch]);
 
   return (
     <div>
@@ -45,11 +46,11 @@ function App() {
           <Todos key={id} todoid={id} title={title} />
         ))}
       <h2>RTKquery</h2>
-      {query.isFetching && "데이터 패칭 중..."}
+      {/* {query.isFetching && "데이터 패칭 중..."}
       {query.data &&
         query.data.map(({ id, title }) => (
           <TodosRTK key={id} todoid={id} title={title} />
-        ))}  
+        ))}   */}
 
 
     </div>

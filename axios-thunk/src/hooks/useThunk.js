@@ -5,7 +5,7 @@ import { useDeleteTodoRTKMutation, useSetTodoRTKMutation, useUpdateTodoRTKMutati
 
 export const useThunk = (todoid, title) => {
   const dispatch = useDispatch()
-  const {todos:todoSlice} = useSelector(selecttodoSlice)
+  // const {todos:todoSlice} = useSelector(selecttodoSlice)
 
 
   const [newtodos, setNewTodos] = useState("") // Thunk input
@@ -74,5 +74,6 @@ export const useThunk = (todoid, title) => {
 
   
 
-  return {todoSlice, newtodos,newtodos2, dispatch, onSubmitHandler, onChangeInput, onDeleteHandler,onUpdateHandler, onChangeupdate,onUpdateSubmitHandler,updatetodos ,update ,onSubmitRTKHandler, onDeleteRTKHandler, onUpdateSubmitRTKHandler}
+  // return {todoSlice, newtodos,newtodos2, dispatch, onSubmitHandler, onChangeInput, onDeleteHandler,onUpdateHandler, onChangeupdate,onUpdateSubmitHandler,updatetodos ,update ,onSubmitRTKHandler, onDeleteRTKHandler, onUpdateSubmitRTKHandler}
+  return {newtodos,newtodos2, dispatch, onSubmitHandler, onChangeInput, onDeleteHandler,onUpdateHandler, onChangeupdate,onUpdateSubmitHandler,updatetodos ,update ,onSubmitRTKHandler, onDeleteRTKHandler, onUpdateSubmitRTKHandler}
 }
