@@ -22,7 +22,7 @@ function App() {
         <Route path="draganddrop" element={<DragandDrop1/>}/>
         <Route path="kakao" element={<Kakao/>}/>
         <Route path="styledcomponents" element={<StyledComponents/>}/>
-        <Route path="animaition" element={<Animaition/>}/>
+        {/* <Route path="animaition" element={<Animaition/>}/> */}
         <Route path="detail" element={<IndexList/>}>
           <Route path=":id" element={<Detail/>}/>
         </Route>

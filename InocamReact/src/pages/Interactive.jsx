@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { styled } from "styled-components";
 
 
-
 function Interactive() {
   const scrollSection1 = useRef(null);
   const scrollSection2 = useRef(null);
@@ -17,6 +16,9 @@ function Interactive() {
   const scrollSection1Msg5 = useRef(null);
   const scrollSection1Msg6 = useRef(null);
   const scrollSection1Msg7 = useRef(null);
+
+  const CanvasSection1 = useRef(null)
+
 
   const [count, setCount] = useState(0)
 
@@ -34,14 +36,22 @@ function Interactive() {
       type:"sticky",
       heightNum: 5, // 브라우저 높이의 5배로 scrollHeight를 세팅, 페이지를 연 디바이스 별로 대응하기 위함입니다. 
       scrollHeight : 0,
+
       objs : {
         contaniner : scrollSection1,
         Section1Msg1: scrollSection1Msg1,
         Section1Msg2 : scrollSection1Msg2,
         Section1Msg3 : scrollSection1Msg3,
         Section1Msg4 : scrollSection1Msg4,
+        // 섹션 3 Canvas
+        Canvas : CanvasSection1,
+        videoImages : []
       },
+
       values : {
+        videoImageCount: 300,
+        imageSequence : [0, 299],
+
         selectionMsgA_opacity : [0 ,1, {start: 0.1, end:0.2}], // const calcValues 에서 계산하기 위해서 // 최고값이 700이 되도록 // [200, 900] 예제를 바르게 [0, 1]로 고쳐봅시다. 
         selectionMsgA_opacity_out : [1 ,0, {start: 0.25, end:0.3}],
         selectionMsgB_opacity : [0 ,1, {start: 0.3, end:0.4}], // 메시지가 등장할 타이밍을 정해줍니다. 
@@ -107,6 +117,18 @@ function Interactive() {
     }
   ]
 
+  const setCanvasImages = () => {
+    let imgElem;
+    for (let i = 0; i  < screnInfo[0].values.videoImageCount; i++) {
+      imgElem = new Image()
+      imgElem.src = require(`../img/video/001/IMG_${6726+i}.JPG`)
+      screnInfo[0].objs.videoImages.push(imgElem)
+    }
+  }
+
+  setCanvasImages()
+
+
   const setLayout = () => {
     // 각 스크롤섹션의 높이 설절
     for (let i =0; i< screnInfo.length; i++) {
@@ -122,7 +144,6 @@ function Interactive() {
     // screnInfo[i].scrollHeight = screnInfo[i].heightNum * window.innerHeight;
     // screnInfo[i].objs.contaniner.current.style.height = `${screnInfo[i].scrollHeight}px` // 마진과 페딩값에 의해서 가변될 수 있다. 
 
-
     // 새로고침시 대응하도록
     let totalScrollHeight = 0
     for (let i =0; i< screnInfo.length; i++) {
@@ -133,6 +154,11 @@ function Interactive() {
       }
     }
     setCount(currentScene);
+
+    // 캔버스 사이즈 조정
+      const heightRatio = window.innerHeight / 1080 // 창 사이즈에 맞춰서 캔버스를 설정해봅시다. 
+      // console.log("heightRatio", heightRatio);
+      // screnInfo[0].objs.Canvas.current.style.transform = `translate3d(-50%, -50, 0) scale(${heightRatio})` // 1은 100% 입니다. 
   }
 
   const calcValues = (value, currenYoffset) => {
@@ -169,7 +195,7 @@ function Interactive() {
     const currentYoffset = yoffset - preScrollHeigth; // 각 섹션의 현재 위치 값 구하기 
     const scrollHeight = screnInfo[currentScene].scrollHeight
     const scrollRatio = currentYoffset / scrollHeight // yoffset / scrollHeight
-    console.log(`currentScene ${currentScene}, ${currentYoffset}px` );
+    // console.log(`currentScene ${currentScene}, ${currentYoffset}px` );
     // console.log(`yoffset ${yoffset}, "preScrollHeigth", ${preScrollHeigth}px \n screnInfo[currentScene].scrollHeight : ${scrollHeight}` );
     switch (currentScene) {
       case 0 :
@@ -192,6 +218,10 @@ function Interactive() {
         let selectionMsgD_opacity_out = calcValues(values.selectionMsgD_opacity_out, currentYoffset)
         let selectionMsgD_translateY = calcValues(values.selectionMsgD_translateY, currentYoffset)
         let selectionMsgD_translateY_out = calcValues(values.selectionMsgD_translateY_out, currentYoffset)
+
+        // 스크롤애 따른 이미지 배열 로드 
+        let sequence = parseInt(calcValues(values.imageSequence, currentYoffset))
+        obj.Canvas.current.getContext('2d').drawImage(obj.videoImages[sequence], 0, 0) // 100 , 100 너비높이도 추가할 수 있습니다. 
         
         if (scrollRatio <= 0.22) {
           obj.Section1Msg1.current.style.opacity = calcValues(values.selectionMsgA_opacity, currentYoffset)
@@ -328,7 +358,15 @@ function Interactive() {
 
 {/* 인터렉션 부분 scrollSection1 */}
       <ScrollSection ref={scrollSection1} >
-        <ScrollSectionH1>AirMug Pro</ScrollSectionH1>
+        <ScrollSectionH1 >AirMug Pro</ScrollSectionH1>
+        
+        {/* 섹션3 고해상도 비디오 인터랙션 */}
+        <StyickyElemCanvas >
+        <Canvas1 ref={CanvasSection1} width="1980" height="1080"></Canvas1>
+
+        </StyickyElemCanvas>
+        {/* 섹션3 고해상도 비디오 인터랙션 */}
+
         <MainMsg $state={count === 0} ref={scrollSection1Msg1}>
           <p>
             온전히 빠져들게 하는
@@ -493,7 +531,7 @@ const GlobalNav = styled.nav`
   width: 100%;
   height: 44px;
   padding: 0 0.5rem;
-
+  z-index: 10;
 `;
 
 const GlobalNavLink = styled.div`
@@ -516,6 +554,7 @@ const LocalNav = styled.nav`
   height: 52px;
   padding: 0 1rem;
   border-bottom: 1px solid #ddd;
+  z-index: 10;
 `;
 
 const LocalNavLinks = styled(GlobalNavLink)`
@@ -539,6 +578,7 @@ const ScrollSection = styled.section`
 `;
 
 const ScrollSectionH1 = styled.h1`
+  /* z-index: 30;; */
   font-size: 4rem;
   text-align: center;
 
@@ -555,7 +595,6 @@ const ScrollSectionH1 = styled.h1`
 const StyickyElem = styled.div`
   display: none;
   position: fixed;
-  top: 0;
   left:0;
   width: 100%;
 `;
@@ -688,6 +727,25 @@ const Footer = styled.footer`
   color:white;
   height: 7rem;
 `;
+
+// 섹션3 
+const StyickyElemCanvas = styled.div`
+	/* display: none; */
+	position: fixed;
+	left: 0;
+	width: 100%;
+  top: 0;
+	height: 100%;
+`
+
+const Canvas1 = styled.canvas`
+	position: absolute;
+	top: 50%;
+	left: 50%;
+  transform: translate(-50%, -50%) scale(1);
+`
+
+
 
 
 /*

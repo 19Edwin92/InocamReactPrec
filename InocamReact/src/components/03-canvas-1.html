@@ -27,8 +27,10 @@
 	<canvas class="sample-canvas" width="1920" height="1080"></canvas>
 
 	<script>
+		// canvas, context 기본 설정입니다. 
 		const canvas = document.querySelector('.sample-canvas');
 		const context = canvas.getContext('2d');
+
 		const videoImages = [];
 		let totalImagesCount = 960;
 		let progress;
@@ -44,7 +46,7 @@
 
 		function init() {
 			document.body.classList.remove('before-load');
-			context.drawImage(videoImages[0], 0, 0);
+			context.drawImage(videoImages[0], 0, 0); // 이미지, x좌표, y좌표 
 
 			window.addEventListener('scroll', function () {
 				progress = pageYOffset / (document.body.offsetHeight - window.innerHeight);
