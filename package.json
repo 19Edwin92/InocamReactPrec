@@ -1,5 +1,8 @@
 {
   "dependencies": {
+    "chart.js": "^4.3.3",
+    "faker": "^6.6.6",
+    "react-chartjs-2": "^5.2.0",
     "react-spring": "^9.7.2"
   }
 }

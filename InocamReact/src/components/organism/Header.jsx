@@ -7,7 +7,7 @@ import { selectColor } from "../../redux/modules/velopertColor";
 
 function Header() {
   const color = useSelector(selectColor)
-  const link = ["velopertcolor", "velopertcounter", "draganddrop", "kakao", "animaition", "styledcomponents", "interactive"]
+  const link = ["velopertcolor", "velopertcounter", "draganddrop", "kakao", "animaition", "styledcomponents", "interactive", "chart"]
   return (
     <Layout>
       {/* <Butterfly /> */}

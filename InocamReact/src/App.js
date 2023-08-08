@@ -11,6 +11,7 @@ import Kakao from "./pages/Kakao";
 import StyledComponents from "./pages/StyledComponents";
 import Animaition from "./pages/Animaition";
 import Interactive from "./pages/Interactive";
+import ChartC from "./pages/ChartC";
 
 function App() {
   return (
@@ -22,7 +23,8 @@ function App() {
         <Route path="draganddrop" element={<DragandDrop1/>}/>
         <Route path="kakao" element={<Kakao/>}/>
         <Route path="styledcomponents" element={<StyledComponents/>}/>
-        {/* <Route path="animaition" element={<Animaition/>}/> */}
+        <Route path="animaition" element={<Animaition/>}/>
+        <Route path="chart" element={<ChartC/>}/>
         <Route path="detail" element={<IndexList/>}>
           <Route path=":id" element={<Detail/>}/>
         </Route>

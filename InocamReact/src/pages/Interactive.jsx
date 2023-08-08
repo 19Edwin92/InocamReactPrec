@@ -285,7 +285,7 @@ function Interactive() {
   }
 
   const scrollLoop = () => {
-    // console.log("yoffset", yoffset, `\n`, `\n`, `  windoeInnerHeight : ${window.innerHeight * 5}`,`screnInfo[i].scrollHeight ${screnInfo[currentScene].scrollHeight}`, `\n`, `  currentScene : ${currentScene}` );
+    console.log("yoffset", yoffset, `\n`, `\n`, `  windoeInnerHeight : ${window.innerHeight * 5}`,`screnInfo[i].scrollHeight ${screnInfo[currentScene].scrollHeight}`, `\n`, `  currentScene : ${currentScene}` );
     // console.log("scrollSection2 섹션의 내부 높이", scrollSection2.current.offsetHeight, "상단으로부터의 높이", scrollSection2.current.offsetTop);
     // console.log("scrollSection3 섹션의 내부 높이", scrollSection3.current.offsetHeight, "상단으로부터의 높이", scrollSection3.current.offsetTop);
     // console.log("scrollSection4 섹션의 내부 높이", scrollSection4.current.offsetHeight, "상단으로부터의 높이", scrollSection4.current.offsetTop);
