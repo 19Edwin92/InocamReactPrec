@@ -3,6 +3,7 @@ import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 import Home from './pages/Home'
 import TestChart from './pages/TestChart'
+import Kakao from './pages/Kakao'
 
 const App: React.FC = () => {
   return (
@@ -10,6 +11,7 @@ const App: React.FC = () => {
       <Routes>
         <Route path='/' element={<Home/>}/>
         <Route path='/testchart' element={<TestChart/>}/>
+        <Route path='/kakao' element={<Kakao/>}/>        
       </Routes>
     </div>
   )

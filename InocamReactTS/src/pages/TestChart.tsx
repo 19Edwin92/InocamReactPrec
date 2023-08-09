@@ -8,12 +8,13 @@ import {
   LineElement,
   ArcElement,
   RadialLinearScale,
+  Filler,
   Title,
   Tooltip,
   Legend,
 } from 'chart.js';
 import styled from 'styled-components';
-import { Bar, Chart, Line, PolarArea, Doughnut } from 'react-chartjs-2';
+import { Bar, Chart, PolarArea, Doughnut, Line } from 'react-chartjs-2';
 
 // 라이브러리 등록 
 // 사용하고 싶은 데이터 그래프 타입에 대해서 선언을 해주어야 사용이 가능하다. 
@@ -21,6 +22,7 @@ ChartJS.register(
   CategoryScale,
   LinearScale,
   PointElement,
+  Filler, // Line 하단을 색으로 채우고 싶을 때 
   BarElement, // Bar 를 사용하기 위해서 
   LineElement, // Line 를 사용하기 위해서 
   RadialLinearScale, // 반지름을 구하는 타입
@@ -37,7 +39,7 @@ const options = {
     legend: {
       // display: false, 
       position: 'top' as const,
-      align: 'end'  as const,
+      align: 'end' as const,
     },
     //차트의 머릿말 설정 부분인데 안해도 되잖다. 
     // title: {
@@ -52,39 +54,164 @@ const options = {
   },
 };
 
-const labels = ["20대", "30대", "40대", "50대", "60대", "70대"]
+const labels = Array.from({ length: 12 }, (_, idx) => `${idx + 1}월`)
 
 export const data = {
   labels,
   datasets: [
     {
       type: 'line' as const,
-      label: '출고신청',
-              data: [5, 2, 10, 5,20, 10],
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(255, 159, 64, 0.2)',
-          'rgba(255, 205, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(153, 102, 255, 0.2)',
-          'rgba(201, 203, 207, 0.2)'
-        ],
-        borderColor: [
-          'rgb(255, 99, 132)',
-          'rgb(255, 159, 64)',
-          'rgb(255, 205, 86)',
-          'rgb(75, 192, 192)',
-          'rgb(54, 162, 235)',
-          'rgb(153, 102, 255)',
-          'rgb(201, 203, 207)'
-        ],
+      tenstion: 0.5,
+      label: '구매한 숫자',
+      data: [10, 10, 100, 10, 10, 10, 10, 10, 10, 10, 10, 10],
+      backgroundColor: [
+        'rgba(255, 99, 132, 0.2)',
+        // 'rgba(255, 159, 64, 0.2)',
+        // 'rgba(255, 205, 86, 0.2)',
+        // 'rgba(75, 192, 192, 0.2)',
+        // 'rgba(54, 162, 235, 0.2)',
+        // 'rgba(153, 102, 255, 0.2)',
+        // 'rgba(201, 203, 207, 0.2)'
+      ],
+      borderColor: [
+        'rgb(255, 99, 132)',
+        // 'rgb(255, 159, 64)',
+        // 'rgb(255, 205, 86)',
+        // 'rgb(75, 192, 192)',
+        // 'rgb(54, 162, 235)',
+        // 'rgb(153, 102, 255)',
+        // 'rgb(201, 203, 207)'
+      ],
+    },
+    {
+      type: 'line' as const,
+      label: '출고된 숫자',
+      tenstion: 0.5,
+      data: [8, 8, 90, 8, 8, 8, 8, 8, 8, 8, 8, 8],
+      backgroundColor: [
+        // 'rgba(255, 99, 132, 0.2)',
+        // 'rgba(255, 159, 64, 0.2)',
+        // 'rgba(255, 205, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        // 'rgba(54, 162, 235, 0.2)',
+        // 'rgba(153, 102, 255, 0.2)',
+        // 'rgba(201, 203, 207, 0.2)'
+      ],
+      borderColor: [
+        // 'rgb(255, 99, 132)',
+        // 'rgb(255, 159, 64)',
+        // 'rgb(255, 205, 86)',
+        'rgb(75, 192, 192)',
+        // 'rgb(54, 162, 235)',
+        // 'rgb(153, 102, 255)',
+        // 'rgb(201, 203, 207)'
+      ],
+    },
+    {
+      type: 'line' as const,
+      label: '취소한 숫자',
+      tenstion: 0.5,
+      data: [2, 2, 10, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+      backgroundColor: [
+        // 'rgba(255, 99, 132, 0.2)',
+        // 'rgba(255, 159, 64, 0.2)',
+        // 'rgba(255, 205, 86, 0.2)',
+        // 'rgba(75, 192, 192, 0.2)',
+        // 'rgba(54, 162, 235, 0.2)',
+        // 'rgba(153, 102, 255, 0.2)',
+        'rgba(201, 203, 207, 0.2)'
+      ],
+      borderColor: [
+        // 'rgb(255, 99, 132)',
+        // 'rgb(255, 159, 64)',
+        // 'rgb(255, 205, 86)',
+        // 'rgb(75, 192, 192)',
+        // 'rgb(54, 162, 235)',
+        // 'rgb(153, 102, 255)',
+        'rgb(201, 203, 207)'
+      ],
+    },
+
+    {
+      type: 'bar' as const,
+      label: '구매한 숫자',
+      data: [10, 10, 100, 10, 10, 10, 10, 10, 10, 10, 10, 10],
+      backgroundColor: [
+        'rgba(255, 99, 132, 0.2)',
+        // 'rgba(255, 159, 64, 0.2)',
+        // 'rgba(255, 205, 86, 0.2)',
+        // 'rgba(75, 192, 192, 0.2)',
+        // 'rgba(54, 162, 235, 0.2)',
+        // 'rgba(153, 102, 255, 0.2)',
+        // 'rgba(201, 203, 207, 0.2)'
+      ],
+      borderColor: [
+        'rgb(255, 99, 132)',
+        // 'rgb(255, 159, 64)',
+        // 'rgb(255, 205, 86)',
+        // 'rgb(75, 192, 192)',
+        // 'rgb(54, 162, 235)',
+        // 'rgb(153, 102, 255)',
+        // 'rgb(201, 203, 207)'
+      ],
     },
     {
       type: 'bar' as const,
-      label: '출고신청 Bar',
-      borderWidth: 2,
-      data: [5, 2, 10, 5,20, 10],
+      label: '출고된 숫자',
+      data: [8, 8, 90, 8, 8, 8, 8, 8, 8, 8, 8, 8],
+      backgroundColor: [
+        // 'rgba(255, 99, 132, 0.2)',
+        // 'rgba(255, 159, 64, 0.2)',
+        // 'rgba(255, 205, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        // 'rgba(54, 162, 235, 0.2)',
+        // 'rgba(153, 102, 255, 0.2)',
+        // 'rgba(201, 203, 207, 0.2)'
+      ],
+      borderColor: [
+        // 'rgb(255, 99, 132)',
+        // 'rgb(255, 159, 64)',
+        // 'rgb(255, 205, 86)',
+        'rgb(75, 192, 192)',
+        // 'rgb(54, 162, 235)',
+        // 'rgb(153, 102, 255)',
+        // 'rgb(201, 203, 207)'
+      ],
+    },
+    {
+      type: 'bar' as const,
+      label: '취소한 숫자',
+      data: [2, 2, 10, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+      backgroundColor: [
+        // 'rgba(255, 99, 132, 0.2)',
+        // 'rgba(255, 159, 64, 0.2)',
+        // 'rgba(255, 205, 86, 0.2)',
+        // 'rgba(75, 192, 192, 0.2)',
+        // 'rgba(54, 162, 235, 0.2)',
+        // 'rgba(153, 102, 255, 0.2)',
+        'rgba(201, 203, 207, 0.2)'
+      ],
+      borderColor: [
+        // 'rgb(255, 99, 132)',
+        // 'rgb(255, 159, 64)',
+        // 'rgb(255, 205, 86)',
+        // 'rgb(75, 192, 192)',
+        // 'rgb(54, 162, 235)',
+        // 'rgb(153, 102, 255)',
+        'rgb(201, 203, 207)'
+      ],
+    },
+  ],
+};
+
+export const data2 = {
+  labels: ["20대", "30대", "40대", "50대", "60대", "70대"],
+  datasets: [
+    {
+      label: '연령별',
+      data: [5, 2, 10, 5, 20, 10],
+      tension: 0.5,
+      fill: true,
       backgroundColor: [
         'rgba(255, 99, 132, 0.2)',
         'rgba(255, 159, 64, 0.2)',
@@ -107,34 +234,6 @@ export const data = {
   ],
 };
 
-export const data2 = {
-  labels,
-  datasets: [
-    {
-      label: '연령별',
-              data: [5, 2, 10, 5,20, 10],
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(255, 159, 64, 0.2)',
-          'rgba(255, 205, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(153, 102, 255, 0.2)',
-          'rgba(201, 203, 207, 0.2)'
-        ],
-        borderColor: [
-          'rgb(255, 99, 132)',
-          'rgb(255, 159, 64)',
-          'rgb(255, 205, 86)',
-          'rgb(75, 192, 192)',
-          'rgb(54, 162, 235)',
-          'rgb(153, 102, 255)',
-          'rgb(201, 203, 207)'
-        ],
-    }
-  ],
-};
-
 export const data3 = {
   options: {
     responsive: true,
@@ -148,31 +247,32 @@ export const data3 = {
   datasets: [
     {
       label: '출고신청',
-              data: [5000, 2000, 10000],
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.8)',
-          'rgba(54, 162, 235, 0.8)',
-          'rgba(255, 206, 86, 0.8)',
-        ],
-        borderColor : "black"
+      data: [5000, 2000, 10000],
+      backgroundColor: [
+        'rgba(255, 99, 132, 0.8)',
+        'rgba(54, 162, 235, 0.8)',
+        'rgba(255, 206, 86, 0.8)',
+      ],
+      borderColor: "black"
     }
   ],
 };
 
-function TestChart() {
 
-  
+
+function TestChart() {
   return (
-    <div style={{width:"70%", margin:"0 auto"}}>
+    <div style={{ width: "70%", margin: "0 auto" }}>
       <h2>TestChart</h2>
       <GraphBox>
-      <GraphBoxText>
+        <GraphBoxText>
           <PolarArea data={data3} />
           <Doughnut options={options} data={data2} />
         </GraphBoxText>
         <GraphBoxText>
           <Chart type='line' options={options} data={data} />
           <Bar options={options} data={data2} />
+          <Line options={options} data={data2} />
         </GraphBoxText>
       </GraphBox>
     </div>
